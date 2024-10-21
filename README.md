@@ -4,4 +4,5 @@ Repositório criado para armazenar o projeto final da disciplina de compiladores
 - Ícaro Travain
 
 ## Analisador léxico
-A primeira etapa deste projeto consiste na implementação de um analisador léxico com auxílio do software flex para gerar o progema em c a partir das expressões regulares da linguagem.
+A primeira etapa deste projeto consiste na implementação de um analisador léxico com auxílio do software flex para gerar o progema em c a partir das expressões regulares da linguagem. 
+Testando esta linha.....
