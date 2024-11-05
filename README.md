@@ -3,6 +3,13 @@ Repositório criado para armazenar o projeto final da disciplina de compiladores
 - Eduardo Bouhid
 - Ícaro Travain
 
-## Analisador léxico
+## Scanner (Analisador léxico)
 A primeira etapa deste projeto consiste na implementação de um analisador léxico com auxílio do software flex para gerar o progema em c a partir das expressões regulares da linguagem. 
-Testando esta linha.....
+
+## Tabela de símbolos
+tiny
+## Analisador sintático
+Bison
+## Árvore sintática 
+## Analisador semântico
+## Gerador de código intermediário  
