@@ -13,7 +13,7 @@ A primeira etapa deste projeto consiste na implementação de um analisador léx
 | Comentarios         | (/\*(Identificador \| Simbolo \| Operador \| Numero)*\*/ \| // (Identificador \| Simbolo \| Operador \| Numero) *(\\n \| EOF)) |
 | Macros              | (#include \| #define)                                                                                                          |
 | Símbolos            | ( ' \| " \| { \| } \| ( \| ) \| [ \| ] ; \| -> \| . \| ,)                                                                      |
-| Operadores          | (+ \| - \| / \| \* \| % \| && \| \|\| ! \| != \| == \| =)                                                                      |
+| Operadores          | (+ \| - \| / \| \* \| % \| && \| \|\| ! \| != \| == \| = | >= | <= | > | <)                                                                      |
 
 ## Tabela de símbolos
 tiny
