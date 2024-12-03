@@ -1,23 +1,34 @@
 %{
 #include <stdio.h>
+int yylinenum = 1;  // Contador de linhas
 %}
 
-/* Definição das expressões regulares */
+%option noyywrap
+
+/* Definição dos estados */
+%x IN_COMMENT
+
 %%
-[A-Za-z]+([A-Za-z]|[0-9]|_)*                  { printf("Identificador: %s\n", yytext); }
-[0-9]+\.?[0-9]*                               { printf("Número: %s\n", yytext); }
-(if|else|while|for|int|float|double|unsigned|do|void|char)  { printf("Palavra Reservada: %s\n", yytext); }
-/\*(.|\n)*?\*/                                { printf("Comentário (bloco): %s\n", yytext); }
-\/\/[^\n]*                                    { printf("Comentário (linha): %s\n", yytext); }
-(#include|#define)                             { printf("Macro: %s\n", yytext); }
-(->|'|"|{|}|\(|\)|\[|\]|;|\.|,)               { printf("Símbolo: %s\n", yytext); }
-(\+|-|/|\*|%|&&|\|\||!|!=|==|=)               { printf("Operador: %s\n", yytext); }
-[ \t\n]+                                      { /* Ignorar espaços e quebras de linha */ }
-.                                             { printf("Caractere desconhecido: %s\n", yytext); }
+"/*"              BEGIN(IN_COMMENT);  
+
+<IN_COMMENT>{
+  "*/"            BEGIN(INITIAL);     // Sai do estado de comentário
+  [^*\n]+         ;                   // Consome texto que não seja '*' ou '\n'
+  "*"             ;                   // Consome '*' isolado
+  "\n"            yylinenum++;         // Conta novas linhas dentro do comentário
+}
+
+(if|else|while|int|void|return)                               { printf("Palavra Reservada: %s\n", yytext); }
+[A-Za-z]+([A-Za-z])*                                          { printf("Identificador: %s\n", yytext); }
+[1-9][0-9]*                                                   { printf("Numero: %s\n", yytext); }
+#[ \t]*(include|define)                                       { printf("Macro: %s\n", yytext); }
+(\{|\}|\(|\)|\[|\]|\;|\.|,)                                   { printf("Simbolo: %s\n", yytext); }
+(\+|\-|\/|\*|\%|\&\&|\|\||\!|\!\=|\=\=|\=|\<|\>|\<\=|\>\=)    { printf("Operador: %s\n", yytext); }
+[ \t\n]+                              ;  
+.                                                             { printf("Caractere inválido: %s\n", yytext); }
 %%
 
 int main(int argc, char **argv) {
     yylex();
     return 0;
 }
-
