@@ -1,0 +1,3 @@
+exec
+lex.yy.c
+out.txt
