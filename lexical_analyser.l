@@ -27,7 +27,6 @@ int yylinenum = 1;  // Contador de linhas
 (return)                                                      {return RETURN;}
 [A-Za-z]+([A-Za-z])*                                          {return ID;}
 [1-9][0-9]*                                                   {return NUM;}
-#[ \t]*(include|define)                                       {return PRC;}
 (\{)                                                          {return LBRACE;}
 (\})                                                          {return RBRACE;}
 (\()                                                          {return LPAREN;}
@@ -35,16 +34,12 @@ int yylinenum = 1;  // Contador de linhas
 (\[)                                                          {return LBRACKET;}
 (\])                                                          {return RBRACKET;}
 (\;)                                                          {return SEMICOLON;}
-(\.)                                                          {return DOT;}
 (\,)                                                          {return COMMA;}
 (\+)                                                          {return PLUS;}
 (\-)                                                          {return MINUS;}
 (\*)                                                          {return TIMES;}
 (\/)                                                          {return OVER;}
 (\%)                                                          {return MOD;}
-(\&\&)                                                        {return AND;}
-(\|\|)                                                        {return OR;}
-(\!)                                                          {return NOT;}
 (\!\=)                                                        {return NEQ;}
 (\=\=)                                                        {return EQ;}
 (\=)                                                          {return ASSIGN;}
@@ -53,6 +48,5 @@ int yylinenum = 1;  // Contador de linhas
 (\<\=)                                                        {return LEQ;}
 (\>\=)                                                        {return GEQ;}
 [ \t\n]+                                                      {/* Ignore whitespace */}
-.                                                             { return INVCHAR; }
 %%
 
