@@ -72,11 +72,11 @@ param:
 ;
 
 composto_decl:
-      LBRACE local_declarações statement_lista RBRACE
+      LBRACE local_declaracoes statement_lista RBRACE
 ;
 
-local_declarações:
-      local_declarações var_declaracao
+local_declaracoes:
+      local_declaracoes var_declaracao
     | /* vazio */
 ;
 
@@ -86,45 +86,45 @@ statement_lista:
 ;
 
 statement:
-      expressão_decl
+      expressao_decl
     | composto_decl
-    | seleção_decl
-    | iteração_decl
+    | selecao_decl
+    | iteracao_decl
     | retorno_decl
 ;
 
-expressão_decl:
-      expressão SEMICOLON
+expressao_decl:
+      expressao SEMICOLON
     | /* vazio */
 ;
 
-seleção_decl:
-      IF LPAREN expressão RPAREN statement
-    | IF LPAREN expressão RPAREN statement ELSE statement
+selecao_decl:
+      IF LPAREN expressao RPAREN statement
+    | IF LPAREN expressao RPAREN statement ELSE statement
 ;
 
-iteração_decl:
-      WHILE LPAREN expressão RPAREN statement
+iteracao_decl:
+      WHILE LPAREN expressao RPAREN statement
 ;
 
 retorno_decl:
       RETURN SEMICOLON
-    | RETURN expressão SEMICOLON
+    | RETURN expressao SEMICOLON
 ;
 
-expressão:
-      var ASSIGN expressão
-    | simples_expressão
+expressao:
+      var ASSIGN expressao
+    | simples_expressao
 ;
 
 var:
       ID
-    | ID LBRACKET expressão RBRACKET
+    | ID LBRACKET expressao RBRACKET
 ;
 
-simples_expressão:
-      soma_expressão relacional soma_expressão
-    | soma_expressão
+simples_expressao:
+      soma_expressao relacional soma_expressao
+    | soma_expressao
 ;
 
 relacional:
@@ -136,9 +136,9 @@ relacional:
     | NEQ
 ;
 
-soma_expressão:
-      soma_expressão PLUS termo
-    | soma_expressão MINUS termo
+soma_expressao:
+      soma_expressao PLUS termo
+    | soma_expressao MINUS termo
     | termo
 ;
 
@@ -150,13 +150,13 @@ termo:
 ;
 
 fator:
-      LPAREN expressão RPAREN
+      LPAREN expressao RPAREN
     | var
-    | ativação
+    | ativacao
     | NUM
 ;
 
-ativação:
+ativacao:
       ID LPAREN args RPAREN
 ;
 
@@ -166,8 +166,8 @@ args:
 ;
 
 args_lista:
-      args_lista COMMA expressão
-    | expressão
+      args_lista COMMA expressao
+    | expressao
 ;
 
 %%
