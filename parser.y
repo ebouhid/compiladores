@@ -179,6 +179,6 @@ int main() {
 }
 
 int yyerror(char *s) {
-    fprintf(stderr, "%s\n", s);
+    printf("Error: %s\n", s);
     return 0;
 }

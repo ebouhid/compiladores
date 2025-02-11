@@ -1,9 +1,12 @@
 %{
 #include <stdio.h>
-#include "globals.h"
+//#include "globals.h"
+
+#include "parser.tab.h"
 int yylinenum = 1;  // Contador de linhas
 %}
 
+/* Indicates that the yywrap function is not needed */
 %option noyywrap
 
 /* Definição dos estados */
@@ -26,7 +29,7 @@ int yylinenum = 1;  // Contador de linhas
 (void)                                                        {return VOID;}
 (return)                                                      {return RETURN;}
 [A-Za-z]+([A-Za-z])*                                          {return ID;}
-[1-9][0-9]*                                                   {return NUM;}
+[1-9][0-9]*                                                   {yylval.num = atoi(yytext); return NUM;}
 (\{)                                                          {return LBRACE;}
 (\})                                                          {return RBRACE;}
 (\()                                                          {return LPAREN;}
