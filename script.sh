@@ -5,7 +5,7 @@ flex lexical_analyser.l
 bison -d analise_sintatica.y
 
 # Compile the generated C code along with any additional source files
-gcc -o compiler lex.yy.c analise_sintatica.tab.c semantic.c -lfl
+gcc -o compiler lex.yy.c analise_sintatica.tab.c -lfl
 
 # Run the compiled program
 ./compiler < test_codes/very_basic.c
