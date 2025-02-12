@@ -1,3 +1,6 @@
 exec
 lex.yy.c
 out.txt
+*.tab.c
+*.tab.h
+compiler
