@@ -1,3 +1,5 @@
 exec
 lex.yy.c
 out.txt
+parser.tab.c
+parser.tab.h

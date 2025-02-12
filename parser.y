@@ -4,14 +4,12 @@
 #include <iostream>
 using namespace std;
 
+extern int yyparse(void);
+
 extern "C"
 {
   int yylex(void);
-  void abrirArq();
 }
-
-void yyerror(char *);
-%}
 
 %union {
     int num;
@@ -175,10 +173,9 @@ args_lista:
 
 int main() {
       yyparse();
-      return 0;
 }
+yyerror(char *s) {
+    std::cout << "Error: " << s << std::endl;
 
-int yyerror(char *s) {
-    printf("Error: %s\n", s);
     return 0;
 }
