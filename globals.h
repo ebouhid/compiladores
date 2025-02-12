@@ -1,40 +1,17 @@
-#ifndef TOKENS_H
-#define TOKENS_H
+#define UNKNOWN_TYPE -1
 
-// Token definitions starting from 300
-#define IF 300
-#define ELSE 301
-#define WHILE 302
-#define INT 303
-#define VOID 304
-#define RETURN 305
-#define ID 306
-#define NUM 307
-#define PRC 308
-#define LBRACE 309
-#define RBRACE 310
-#define LPAREN 311
-#define RPAREN 312
-#define LBRACKET 313
-#define RBRACKET 314
-#define SEMICOLON 315
-#define DOT 316
-#define COMMA 317
-#define PLUS 318
-#define MINUS 319
-#define TIMES 320
-#define OVER 321
-#define MOD 322
-#define AND 323
-#define OR 324
-#define NOT 325
-#define NEQ 326
-#define EQ 327
-#define ASSIGN 328
-#define LT 329
-#define GT 330
-#define LEQ 331
-#define GEQ 332
-#define INVCHAR 333
+// Struct dos simbolos
+typedef struct Symbol {
+    char *name;
+    int type;       // Data type (e.g., INT, VOID, etc.)
+    int scope;      // Scope level (0 for global, >0 for local)
+    struct Symbol *next;
+} Symbol;
 
-#endif // TOKENS_H
+extern Symbol *symbol_table; // Tabela de simbolos
+
+// Metodos
+void add_symbol(char *name, int type, int scope);
+Symbol *lookup_symbol(char *name);
+void check_declaration(char *name, int scope);
+void check_type_compatibility(int type1, int type2, const char *operation);

@@ -1,58 +1,90 @@
 %{
 #include <stdio.h>
+#include <stdlib.h>
 #include "globals.h"
+#include "analise_sintatica.tab.h"
+
 int yylinenum = 1;  // Contador de linhas
+
+Symbol *symbol_table = NULL;
+
+void add_symbol(char *name, int type, int scope) {
+    Symbol *new_symbol = (Symbol *)malloc(sizeof(Symbol));
+    if (!new_symbol) {
+        fprintf(stderr, "Erro: Falha na alocação de memória.\n");
+        exit(1);
+    }
+    new_symbol->name = strdup(name);
+    new_symbol->type = type;
+    new_symbol->scope = scope;
+    new_symbol->next = symbol_table;
+    symbol_table = new_symbol;
+}
+
+Symbol *lookup_symbol(char *name) {
+    Symbol *current = symbol_table;
+    while (current != NULL) {
+        if (strcmp(current->name, name) == 0) {
+            return current;
+        }
+        current = current->next;
+    }
+    return NULL;
+}
 %}
 
 %option noyywrap
 
-/* Definição dos estados */
 %x IN_COMMENT
 
 %%
+
 "/*"              BEGIN(IN_COMMENT);  
 
 <IN_COMMENT>{
-  "*/"            BEGIN(INITIAL);     // Sai do estado de comentário
-  [^*\n]+         ;                   // Consome texto que não seja '*' ou '\n'
-  "*"             ;                   // Consome '*' isolado
-  "\n"            yylinenum++;         // Conta novas linhas dentro do comentário
+  "*/"            BEGIN(INITIAL);     
+  [^*\n]+         ;                    
+  "*"             ;                    
+  "\n"            yylinenum++;         
 }
 
-(if)                                                          {return IF;}
-(else)                                                        {return ELSE;}
-(while)                                                       {return WHILE;}
-(int)                                                         {return INT;}
-(void)                                                        {return VOID;}
-(return)                                                      {return RETURN;}
-[A-Za-z]+([A-Za-z])*                                          {return ID;}
-[1-9][0-9]*                                                   {return NUM;}
-#[ \t]*(include|define)                                       {return PRC;}
-(\{)                                                          {return LBRACE;}
-(\})                                                          {return RBRACE;}
-(\()                                                          {return LPAREN;}
-(\))                                                          {return RPAREN;}
-(\[)                                                          {return LBRACKET;}
-(\])                                                          {return RBRACKET;}
-(\;)                                                          {return SEMICOLON;}
-(\.)                                                          {return DOT;}
-(\,)                                                          {return COMMA;}
-(\+)                                                          {return PLUS;}
-(\-)                                                          {return MINUS;}
-(\*)                                                          {return TIMES;}
-(\/)                                                          {return OVER;}
-(\%)                                                          {return MOD;}
-(\&\&)                                                        {return AND;}
-(\|\|)                                                        {return OR;}
-(\!)                                                          {return NOT;}
-(\!\=)                                                        {return NEQ;}
-(\=\=)                                                        {return EQ;}
-(\=)                                                          {return ASSIGN;}
-(\<)                                                          {return LT;}
-(\>)                                                          {return GT;}
-(\<\=)                                                        {return LEQ;}
-(\>\=)                                                        {return GEQ;}
-[ \t\n]+                                                      {/* Ignore whitespace */}
-.                                                             { return INVCHAR; }
-%%
+"if"             { return T_IF; }
+"else"           { return T_ELSE; }
+"while"          { return T_WHILE; }
+"int"            { printf("Lexer: got int\n");return T_INT; }
+"void"           { printf("Lexer: got void\n");return T_VOID; }
+"return"         { return T_RETURN; }
 
+[A-Za-z_][A-Za-z0-9_]* { 
+    if (lookup_symbol(yytext) == NULL) {
+        add_symbol(yytext, UNKNOWN_TYPE, 0);
+    }
+    return T_ID;
+}
+
+[0-9]+          { return T_NUM; }
+
+"{"             { return T_LBRACE; }
+"}"             { return T_RBRACE; }
+"("             { return T_LPAREN; }
+")"             { return T_RPAREN; }
+"["             { return T_LBRACKET; }
+"]"             { return T_RBRACKET; }
+";"             { return T_SEMICOLON; }
+","             { return T_COMMA; }
+"+"             { return T_PLUS; }
+"-"             { return T_MINUS; }
+"*"             { return T_TIMES; }
+"/"             { return T_OVER; }
+"%"             { return T_MOD; }
+"!="            { return T_NEQ; }
+"=="            { return T_EQ; }
+"="             { return T_ASSIGN; }
+"<"             { return T_LT; }
+">"             { return T_GT; }
+"<="            { return T_LEQ; }
+">="            { return T_GEQ; }
+
+[\n]+      { yylinenum++; } 
+
+%%

@@ -1,30 +1,29 @@
 %{
-//GLC to c- language
+// GLC to C- language
 
-#include <iostream>
-using namespace std;
+#include <stdio.h>
+#include "globals.h"
 
-extern "C"
-{
-//  int yyparse(void);
-  int yylex(void);
-  void abrirArq();
-}
-
-void yyerror(char *);
+int yylex(void);
+int yyerror(char *);
+extern char *yytext;
+extern int yylinenum;
 %}
-
 
 %start programa
 
-%token <int> NUM
-%token <string> ID
-%token IF ELSE RETURN WHILE INT VOID
-%token PRC
-%token LBRACE RBRACE LPAREN RPAREN LBRACKET RBRACKET SEMICOLON DOT COMMA
-%token PLUS MINUS TIMES OVER MOD AND OR NOT NEQ EQ ASSIGN LT GT LEQ GEQ
-%token INVCHAR
+%token T_INT T_VOID T_IF T_ELSE T_WHILE T_RETURN
+%token T_ID T_NUM
+%token T_SEMICOLON T_COMMA T_ASSIGN T_LPAREN T_RPAREN T_LBRACE T_RBRACE T_LBRACKET T_RBRACKET
+%token T_LT T_LEQ T_GT T_GEQ T_EQ T_NEQ
+%token T_PLUS T_MINUS T_TIMES T_OVER T_MOD
 
+%left T_LT T_LEQ T_GT T_GEQ T_EQ T_NEQ
+%left T_PLUS T_MINUS
+%left T_TIMES T_OVER T_MOD
+%right T_ASSIGN
+%nonassoc LOWER_THAN_ELSE
+%nonassoc T_ELSE
 
 %%
 
@@ -43,141 +42,259 @@ declaracao:
 ;
 
 var_declaracao:
-      tipo_especificador ID SEMICOLON
-    | tipo_especificador ID LBRACKET NUM RBRACKET SEMICOLON
+      tipo_especificador T_ID T_SEMICOLON
+    | tipo_especificador T_ID T_LBRACKET T_NUM T_RBRACKET T_SEMICOLON
 ;
 
 tipo_especificador:
-      INT
-    | VOID
+      T_INT { printf("Parser: got int\n"); }
+    | T_VOID
 ;
 
 fun_declaracao:
-      tipo_especificador ID LPAREN params RPAREN composto_decl
+      tipo_especificador T_ID T_LPAREN params T_RPAREN composto_decl
 ;
 
 params:
       param_lista
-    | VOID
+    | T_VOID
 ;
 
 param_lista:
-      param_lista COMMA param
-    | param
+      param
+    | param_lista T_COMMA param
 ;
 
 param:
-      tipo_especificador ID
-    | tipo_especificador ID LBRACKET RBRACKET
+      tipo_especificador T_ID
+    | tipo_especificador T_ID T_LBRACKET T_RBRACKET
 ;
 
 composto_decl:
-      LBRACE local_declarações statement_lista RBRACE
+      T_LBRACE local_declaracoes statement_lista T_RBRACE
 ;
 
-local_declarações:
-      local_declarações var_declaracao
+local_declaracoes:
+      local_declaracoes var_declaracao
     | /* vazio */
 ;
 
 statement_lista:
-      statement_lista statement
-    | /* vazio */
+      statement
+    | statement_lista statement
 ;
 
 statement:
-      expressão_decl
+      expressao_decl
     | composto_decl
-    | seleção_decl
-    | iteração_decl
+    | selecao_decl
+    | iteracao_decl
     | retorno_decl
 ;
 
-expressão_decl:
-      expressão SEMICOLON
-    | /* vazio */
+expressao_decl:
+      expressao T_SEMICOLON
 ;
 
-seleção_decl:
-      IF LPAREN expressão RPAREN statement
-    | IF LPAREN expressão RPAREN statement ELSE statement
+selecao_decl:
+      T_IF T_LPAREN expressao T_RPAREN statement %prec LOWER_THAN_ELSE
+    | T_IF T_LPAREN expressao T_RPAREN statement T_ELSE statement
 ;
 
-iteração_decl:
-      WHILE LPAREN expressão RPAREN statement
+iteracao_decl:
+      T_WHILE T_LPAREN expressao T_RPAREN statement
 ;
 
 retorno_decl:
-      RETURN SEMICOLON
-    | RETURN expressão SEMICOLON
+      T_RETURN T_SEMICOLON
+    | T_RETURN expressao T_SEMICOLON
 ;
 
-expressão:
-      var ASSIGN expressão
-    | simples_expressão
+expressao:
+      var T_ASSIGN expressao
+    | simples_expressao
 ;
 
 var:
-      ID
-    | ID LBRACKET expressão RBRACKET
+      T_ID
+    | T_ID T_LBRACKET expressao T_RBRACKET
 ;
 
-simples_expressão:
-      soma_expressão relacional soma_expressão
-    | soma_expressão
+simples_expressao:
+      soma_expressao
+    | soma_expressao relacional soma_expressao
 ;
 
 relacional:
-      LT
-    | LEQ
-    | GT
-    | GEQ
-    | EQ
-    | NEQ
+      T_LT
+    | T_LEQ
+    | T_GT
+    | T_GEQ
+    | T_EQ
+    | T_NEQ
 ;
 
-soma_expressão:
-      soma_expressão PLUS termo
-    | soma_expressão MINUS termo
-    | termo
+soma_expressao:
+      termo
+    | soma_expressao T_PLUS termo
+    | soma_expressao T_MINUS termo
 ;
 
 termo:
-      termo TIMES fator
-    | termo OVER fator
-    | termo MOD fator
-    | fator
+      fator
+    | termo T_TIMES fator
+    | termo T_OVER fator
+    | termo T_MOD fator
 ;
 
 fator:
-      LPAREN expressão RPAREN
+      T_LPAREN expressao T_RPAREN
     | var
-    | ativação
-    | NUM
+    | ativacao
+    | T_NUM
 ;
 
-ativação:
-      ID LPAREN args RPAREN
+ativacao:
+      T_ID T_LPAREN args T_RPAREN
 ;
 
 args:
-      args_lista
-    | /* vazio */
+    args_lista
 ;
 
 args_lista:
-      args_lista COMMA expressão
-    | expressão
+      expressao
+    | args_lista T_COMMA expressao
 ;
 
 %%
 
+void print_token(int token_val) {
+      typedef enum {
+    T_IF = 300, T_ELSE, T_WHILE, T_INT, T_VOID, T_RETURN, 
+    T_ID, T_NUM, T_PRC, T_LBRACE, T_RBRACE, T_LPAREN, T_RPAREN, 
+    T_LBRACKET, T_RBRACKET, T_SEMICOLON, T_DOT, T_COMMA, 
+    T_PLUS, T_MINUS, T_TIMES, T_OVER, T_MOD, 
+    T_AND, T_OR, T_NOT, T_NEQ, T_EQ, T_ASSIGN, 
+    T_LT, T_GT, T_LEQ, T_GEQ, T_INVCHAR
+} TokenType;
+    switch (token_val) {
+        case T_IF:
+            printf("Token: T_IF (300)\n");
+            break;
+        case T_ELSE:
+            printf("Token: T_ELSE (%d)\n", T_ELSE);
+            break;
+        case T_WHILE:
+            printf("Token: T_WHILE (%d)\n", T_WHILE);
+            break;
+        case T_INT:
+            printf("Token: T_INT (%d)\n", T_INT);
+            break;
+        case T_VOID:
+            printf("Token: T_VOID (%d)\n", T_VOID);
+            break;
+        case T_RETURN:
+            printf("Token: T_RETURN (%d)\n", T_RETURN);
+            break;
+        case T_ID:
+            printf("Token: T_ID (%d)\n", T_ID);
+            break;
+        case T_NUM:
+            printf("Token: T_NUM (%d)\n", T_NUM);
+            break;
+        case T_PRC:
+            printf("Token: T_PRC (%d)\n", T_PRC);
+            break;
+        case T_LBRACE:
+            printf("Token: T_LBRACE (%d)\n", T_LBRACE);
+            break;
+        case T_RBRACE:
+            printf("Token: T_RBRACE (%d)\n", T_RBRACE);
+            break;
+        case T_LPAREN:
+            printf("Token: T_LPAREN (%d)\n", T_LPAREN);
+            break;
+        case T_RPAREN:
+            printf("Token: T_RPAREN (%d)\n", T_RPAREN);
+            break;
+        case T_LBRACKET:
+            printf("Token: T_LBRACKET (%d)\n", T_LBRACKET);
+            break;
+        case T_RBRACKET:
+            printf("Token: T_RBRACKET (%d)\n", T_RBRACKET);
+            break;
+        case T_SEMICOLON:
+            printf("Token: T_SEMICOLON (%d)\n", T_SEMICOLON);
+            break;
+        case T_DOT:
+            printf("Token: T_DOT (%d)\n", T_DOT);
+            break;
+        case T_COMMA:
+            printf("Token: T_COMMA (%d)\n", T_COMMA);
+            break;
+        case T_PLUS:
+            printf("Token: T_PLUS (%d)\n", T_PLUS);
+            break;
+        case T_MINUS:
+            printf("Token: T_MINUS (%d)\n", T_MINUS);
+            break;
+        case T_TIMES:
+            printf("Token: T_TIMES (%d)\n", T_TIMES);
+            break;
+        case T_OVER:
+            printf("Token: T_OVER (%d)\n", T_OVER);
+            break;
+        case T_MOD:
+            printf("Token: T_MOD (%d)\n", T_MOD);
+            break;
+        case T_AND:
+            printf("Token: T_AND (%d)\n", T_AND);
+            break;
+        case T_OR:
+            printf("Token: T_OR (%d)\n", T_OR);
+            break;
+        case T_NOT:
+            printf("Token: T_NOT (%d)\n", T_NOT);
+            break;
+        case T_NEQ:
+            printf("Token: T_NEQ (%d)\n", T_NEQ);
+            break;
+        case T_EQ:
+            printf("Token: T_EQ (%d)\n", T_EQ);
+            break;
+        case T_ASSIGN:
+            printf("Token: T_ASSIGN (%d)\n", T_ASSIGN);
+            break;
+        case T_LT:
+            printf("Token: T_LT (%d)\n", T_LT);
+            break;
+        case T_GT:
+            printf("Token: T_GT (%d)\n", T_GT);
+            break;
+        case T_LEQ:
+            printf("Token: T_LEQ (%d)\n", T_LEQ);
+            break;
+        case T_GEQ:
+            printf("Token: T_GEQ (%d)\n", T_GEQ);
+            break;
+        case T_INVCHAR:
+            printf("Token: T_INVCHAR (%d)\n", T_INVCHAR);
+            break;
+        default:
+            printf("Unknown token: %d\n", token_val);
+    }
+}
+
 int main() {
+      int token = 1;
+      /*while ((token = yylex()) != 0) {  // yylex() returns 0 at the end of input
+        print_token(token);
+    }*/
     yyparse();
     return 0;
 }
 
-int yyerror(char *s) {
-    fprintf(stderr, "%s\n", s);
-    return 0;
+int yyerror(char *msg) {
+    fprintf(stderr, "Erro de sintaxe na linha %d: %s. Token inesperado: '%s'\n", yylinenum, msg, yytext);
 }
