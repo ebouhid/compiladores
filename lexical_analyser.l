@@ -85,6 +85,7 @@ Symbol *lookup_symbol(char *name) {
 "<="            { return T_LEQ; }
 ">="            { return T_GEQ; }
 
-[\n]+      { yylinenum++; } 
+[ \t\r]+    ;  // Ignora espaços e tabulações
+[\n]        { yylinenum++; }  // Conta cada nova linha
 
 %%
