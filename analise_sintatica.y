@@ -53,6 +53,7 @@ tipo_especificador:
 
 fun_declaracao:
       tipo_especificador T_ID T_LPAREN params T_RPAREN composto_decl
+    | tipo_especificador T_ID T_LPAREN T_RPAREN composto_decl
 ;
 
 params:
@@ -156,6 +157,7 @@ fator:
 
 ativacao:
       T_ID T_LPAREN args T_RPAREN
+    | T_ID T_LPAREN T_RPAREN
 ;
 
 args:
