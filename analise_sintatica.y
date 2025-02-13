@@ -293,7 +293,12 @@ int main() {
       /*while ((token = yylex()) != 0) {  // yylex() returns 0 at the end of input
         print_token(token);
     }*/
-    yyparse();
+    int sintatica = yyparse();
+    if (sintatica == 0) {
+        printf("Sucesso na análise sintática\n");
+    } else {
+        printf("Erro na análise sintática\n");
+    }
     return 0;
 }
 
