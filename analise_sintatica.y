@@ -53,6 +53,7 @@ tipo_especificador:
 
 fun_declaracao:
       tipo_especificador T_ID T_LPAREN params T_RPAREN composto_decl
+    | tipo_especificador T_ID T_LPAREN T_RPAREN composto_decl
 ;
 
 params:
@@ -156,6 +157,7 @@ fator:
 
 ativacao:
       T_ID T_LPAREN args T_RPAREN
+    | T_ID T_LPAREN T_RPAREN
 ;
 
 args:
@@ -291,7 +293,12 @@ int main() {
       /*while ((token = yylex()) != 0) {  // yylex() returns 0 at the end of input
         print_token(token);
     }*/
-    yyparse();
+    int sintatica = yyparse();
+    if (sintatica == 0) {
+        printf("Sucesso na análise sintática\n");
+    } else {
+        printf("Erro na análise sintática\n");
+    }
     return 0;
 }
 
