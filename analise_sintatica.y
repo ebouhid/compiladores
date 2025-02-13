@@ -2,6 +2,7 @@
 // GLC to C- language
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "globals.h"
 
 int yylex(void);
@@ -12,8 +13,20 @@ extern int yylinenum;
 
 %start programa
 
+%union {
+    int value;
+    char* id;
+    int type;
+    ExprType symbol;
+}
+
 %token T_INT T_VOID T_IF T_ELSE T_WHILE T_RETURN
-%token T_ID T_NUM
+%token <value> T_NUM 
+%token <id> T_ID
+
+%type <type> tipo_especificador
+%type <symbol> var expressao simples_expressao soma_expressao termo fator ativacao var_declaracao fun_declaracao
+
 %token T_SEMICOLON T_COMMA T_ASSIGN T_LPAREN T_RPAREN T_LBRACE T_RBRACE T_LBRACKET T_RBRACKET
 %token T_LT T_LEQ T_GT T_GEQ T_EQ T_NEQ
 %token T_PLUS T_MINUS T_TIMES T_OVER T_MOD
@@ -42,18 +55,33 @@ declaracao:
 ;
 
 var_declaracao:
-      tipo_especificador T_ID T_SEMICOLON
-    | tipo_especificador T_ID T_LBRACKET T_NUM T_RBRACKET T_SEMICOLON
-;
+    tipo_especificador T_ID T_SEMICOLON { 
+        add_symbol($2, $1, current_scope);
+        $$.type = $1;
+        $$.name = $2;
+        $$.scope = current_scope;
+    } // Arrays
+    | tipo_especificador T_ID T_LBRACKET T_NUM T_RBRACKET T_SEMICOLON {
+        add_symbol($2, $1, current_scope);
+        $$.type = $1;   
+        $$.name = $2;
+        $$.scope = current_scope;
+    }
+    ;
 
 tipo_especificador:
-      T_INT { printf("Parser: got int\n"); }
-    | T_VOID
+      T_INT { $$ = TYPE_INT; }
+    | T_VOID { $$ = TYPE_VOID; }
 ;
 
 fun_declaracao:
-      tipo_especificador T_ID T_LPAREN params T_RPAREN composto_decl
-;
+    tipo_especificador T_ID T_LPAREN params T_RPAREN composto_decl {
+        add_symbol($2, $1, 0);
+        $$.type = $1;
+        $$.name = $2;
+        $$.scope = 0;
+    }
+    ;
 
 params:
       param_lista
@@ -111,13 +139,37 @@ retorno_decl:
 ;
 
 expressao:
-      var T_ASSIGN expressao
-    | simples_expressao
+    var T_ASSIGN expressao {
+        check_declaration($1, current_scope);
+        check_type_compatibility($1, $3, "assignment");
+        $$.type = $1.type;
+        $$.name = $1.name;
+        $$.scope = current_scope;
+    }
+    | simples_expressao { 
+        $$.type = $1.type;
+        $$.name = $1.name;
+        $$.scope = $1.scope;
+    }
 ;
 
 var:
-      T_ID
-    | T_ID T_LBRACKET expressao T_RBRACKET
+    T_ID {
+        Symbol *sym = lookup_symbol($1);
+        if (sym != NULL) {
+            $$.type = sym->type;
+            $$.name = $1;
+            $$.scope = sym->scope;
+        }
+    }
+    | T_ID T_LBRACKET expressao T_RBRACKET {
+        Symbol *sym = lookup_symbol($1);
+        if (sym != NULL) {
+            $$.type = sym->type;
+            $$.name = $1;
+            $$.scope = sym->scope;
+        }
+    }
 ;
 
 simples_expressao:
@@ -148,18 +200,38 @@ termo:
 ;
 
 fator:
-      T_LPAREN expressao T_RPAREN
-    | var
-    | ativacao
-    | T_NUM
+      T_LPAREN expressao T_RPAREN { $$ = $2; }
+    | ativacao { $$ = $1; }
+    | T_NUM { 
+        $$.type = TYPE_INT;
+        $$.name = NULL;
+        $$.scope = current_scope;
+    }
+    | T_ID { 
+        Symbol *sym = lookup_symbol($1);
+        if (sym != NULL) {
+            $$.type = sym->type;
+            $$.name = $1;
+            $$.scope = sym->scope;
+        }
+    }
 ;
 
 ativacao:
-      T_ID T_LPAREN args T_RPAREN
-;
+    T_ID T_LPAREN args T_RPAREN {
+        Symbol *sym = lookup_symbol($1);
+        if (sym != NULL) {
+            $$.type = sym->type;
+            $$.name = $1;
+            $$.scope = sym->scope;
+        }
+        
+    }
+    ;
 
 args:
-    args_lista
+    /* vazio */
+    | args_lista
 ;
 
 args_lista:
