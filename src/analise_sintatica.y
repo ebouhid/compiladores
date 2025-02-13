@@ -9,6 +9,7 @@ int yyerror(char *);
 extern char *yytext;
 extern int yylinenum;
 %}
+%debug
 
 %start programa
 
@@ -289,6 +290,7 @@ void print_token(int token_val) {
 }
 
 int main() {
+    yydebug = 0;
       int token = 1;
       /*while ((token = yylex()) != 0) {  // yylex() returns 0 at the end of input
         print_token(token);
