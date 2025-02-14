@@ -55,9 +55,7 @@ No * create_tree(int linha, const char *lexmema, NodeKind kind, int kind_union){
     return tree;
 }
 
-No * add_filho(No *pai, int linha, const char *lexmema, NodeKind kind, int kind_union){
-    No *filho = create_node(linha, lexmema, kind, kind_union);
-
+No * add_filho(No *pai, No *filho){
     int i = 0;
 
     while (pai->filho[i] != NULL && i < NUMMAXFILHOS){
@@ -74,9 +72,7 @@ No * add_filho(No *pai, int linha, const char *lexmema, NodeKind kind, int kind_
     return pai;
 }
 
-No * add_irmao(No *irmao, int linha, const char *lexmema, NodeKind kind, int kind_union){
-    No *novo = create_node(linha, lexmema, kind, kind_union);
-
+No * add_irmao(No *irmao, No *novo){
     while (irmao->irmao != NULL){
         irmao = irmao->irmao;
     }
@@ -126,16 +122,19 @@ void print_tree(No *tree, int depth){
 }
 
 int main(){
-    No *tree = create_tree(0, "raiz", statement_k, 0);
-    add_filho(tree, 1, "filho1", statement_k, 0);
-    add_filho(tree, 2, "filho2", expression_k, 0);
-    add_filho(tree, 3, "filho3", declaration_k, 0);
-    add_filho(tree->filho[0], 4, "filho1.1", statement_k, 0);
-    add_filho(tree->filho[0], 5, "filho1.2", expression_k, 0);
-    add_filho(tree->filho[0], 6, "filho1.3", declaration_k, 0);
-    add_irmao(tree->filho[0]->filho[0], 7, "irmao1.1", statement_k, 0);
+    No *tree = create_tree(1, "if", statement_k, if_k);
+    No *stmt = create_node(1, "while", statement_k, while_k);
+    No *expr = create_node(1, "op", expression_k, op_k);
+    No *decl = create_node(1, "var", declaration_k, var_k);
+    No *stmt2 = create_node(1, "return", statement_k, return_k);
+    No *stmt3 = create_node(1, "break", statement_k, break_k);
+
+    add_filho(tree, stmt);
+    add_filho(stmt, expr);
+    add_filho(tree, decl);
+    add_irmao(stmt, stmt2);
+
+
 
     print_tree(tree, 0);
-    free_tree(tree);
-    return 0;
 }
