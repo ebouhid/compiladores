@@ -121,6 +121,7 @@ void print_tree(No *tree, int depth){
     print_tree(tree->irmao, depth);
 }
 
+/* Comentando para não dar multiple definitions of main
 int main(){
     No *tree = create_tree(1, "if", statement_k, if_k);
     No *stmt = create_node(1, "while", statement_k, while_k);
@@ -138,3 +139,4 @@ int main(){
 
     print_tree(tree, 0);
 }
+*/

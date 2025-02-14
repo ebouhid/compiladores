@@ -23,7 +23,7 @@ void check_type_compatibility(int type1, int type2, const char *operation);
 
 typedef enum {statement_k, expression_k, declaration_k} NodeKind;
 typedef enum {if_k, while_k, return_k, break_k, continue_k, expression_statement_k} StatementKind;
-typedef enum {op_k, constant_k, id_k, type_k} ExpressionKind;
+typedef enum {op_k, constant_k, id_k, type_k, arr_k, ativ_k, assign_k} ExpressionKind; /* A gente precisa do type_k? */
 typedef enum {var_k, fun_k} DeclarationKind;
 
 typedef struct no
