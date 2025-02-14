@@ -1,0 +1,193 @@
+Starting parse
+Entering state 0
+Stack now 0
+Reading a token
+Next token is token T_INT ()
+Shifting token T_INT ()
+Entering state 1
+Stack now 0 1
+Reducing stack by rule 8 (line 53):
+   $1 = token T_INT ()
+-> $$ = nterm tipo_especificador ()
+Entering state 7
+Stack now 0 7
+Reading a token
+Next token is token T_ID ()
+Shifting token T_ID ()
+Entering state 11
+Stack now 0 7 11
+Reading a token
+Next token is token T_LPAREN ()
+Shifting token T_LPAREN ()
+Entering state 13
+Stack now 0 7 11 13
+Reading a token
+Next token is token T_VOID ()
+Shifting token T_VOID ()
+Entering state 15
+Stack now 0 7 11 13 15
+Reading a token
+Next token is token T_RPAREN ()
+Reducing stack by rule 13 (line 64):
+   $1 = token T_VOID ()
+-> $$ = nterm params ()
+Entering state 18
+Stack now 0 7 11 13 18
+Next token is token T_RPAREN ()
+Shifting token T_RPAREN ()
+Entering state 25
+Stack now 0 7 11 13 18 25
+Reading a token
+Next token is token T_LBRACE ()
+Shifting token T_LBRACE ()
+Entering state 22
+Stack now 0 7 11 13 18 25 22
+Reducing stack by rule 20 (line 83):
+-> $$ = nterm local_declaracoes ()
+Entering state 28
+Stack now 0 7 11 13 18 25 22 28
+Reading a token
+Next token is token T_INT ()
+Shifting token T_INT ()
+Entering state 1
+Stack now 0 7 11 13 18 25 22 28 1
+Reducing stack by rule 8 (line 53):
+   $1 = token T_INT ()
+-> $$ = nterm tipo_especificador ()
+Entering state 40
+Stack now 0 7 11 13 18 25 22 28 40
+Reading a token
+Next token is token T_ID ()
+Shifting token T_ID ()
+Entering state 63
+Stack now 0 7 11 13 18 25 22 28 40 63
+Reading a token
+Next token is token T_SEMICOLON ()
+Shifting token T_SEMICOLON ()
+Entering state 12
+Stack now 0 7 11 13 18 25 22 28 40 63 12
+Reducing stack by rule 6 (line 48):
+   $1 = nterm tipo_especificador ()
+   $2 = token T_ID ()
+   $3 = token T_SEMICOLON ()
+-> $$ = nterm var_declaracao ()
+Entering state 39
+Stack now 0 7 11 13 18 25 22 28 39
+Reducing stack by rule 19 (line 82):
+   $1 = nterm local_declaracoes ()
+   $2 = nterm var_declaracao ()
+-> $$ = nterm local_declaracoes ()
+Entering state 28
+Stack now 0 7 11 13 18 25 22 28
+Reading a token
+Next token is token T_RETURN ()
+Shifting token T_RETURN ()
+Entering state 35
+Stack now 0 7 11 13 18 25 22 28 35
+Reading a token
+Next token is token T_NUM ()
+Shifting token T_NUM ()
+Entering state 37
+Stack now 0 7 11 13 18 25 22 28 35 37
+Reducing stack by rule 56 (line 158):
+   $1 = token T_NUM ()
+-> $$ = nterm fator ()
+Entering state 53
+Stack now 0 7 11 13 18 25 22 28 35 53
+Reducing stack by rule 49 (line 148):
+   $1 = nterm fator ()
+-> $$ = nterm termo ()
+Entering state 52
+Stack now 0 7 11 13 18 25 22 28 35 52
+Reading a token
+Next token is token T_SEMICOLON ()
+Reducing stack by rule 46 (line 142):
+   $1 = nterm termo ()
+-> $$ = nterm soma_expressao ()
+Entering state 51
+Stack now 0 7 11 13 18 25 22 28 35 51
+Next token is token T_SEMICOLON ()
+Reducing stack by rule 38 (line 128):
+   $1 = nterm soma_expressao ()
+-> $$ = nterm simples_expressao ()
+Entering state 50
+Stack now 0 7 11 13 18 25 22 28 35 50
+Reducing stack by rule 35 (line 119):
+   $1 = nterm simples_expressao ()
+-> $$ = nterm expressao ()
+Entering state 59
+Stack now 0 7 11 13 18 25 22 28 35 59
+Next token is token T_SEMICOLON ()
+Shifting token T_SEMICOLON ()
+Entering state 82
+Stack now 0 7 11 13 18 25 22 28 35 59 82
+Reducing stack by rule 33 (line 114):
+   $1 = token T_RETURN ()
+   $2 = nterm expressao ()
+   $3 = token T_SEMICOLON ()
+-> $$ = nterm retorno_decl ()
+Entering state 47
+Stack now 0 7 11 13 18 25 22 28 47
+Reducing stack by rule 27 (line 96):
+   $1 = nterm retorno_decl ()
+-> $$ = nterm statement ()
+Entering state 43
+Stack now 0 7 11 13 18 25 22 28 43
+Reducing stack by rule 21 (line 87):
+   $1 = nterm statement ()
+-> $$ = nterm statement_lista ()
+Entering state 42
+Stack now 0 7 11 13 18 25 22 28 42
+Reading a token
+Next token is token T_RBRACE ()
+Shifting token T_RBRACE ()
+Entering state 64
+Stack now 0 7 11 13 18 25 22 28 42 64
+Reducing stack by rule 18 (line 78):
+   $1 = token T_LBRACE ()
+   $2 = nterm local_declaracoes ()
+   $3 = nterm statement_lista ()
+   $4 = token T_RBRACE ()
+-> $$ = nterm composto_decl ()
+Entering state 30
+Stack now 0 7 11 13 18 25 30
+Reducing stack by rule 10 (line 58):
+   $1 = nterm tipo_especificador ()
+   $2 = token T_ID ()
+   $3 = token T_LPAREN ()
+   $4 = nterm params ()
+   $5 = token T_RPAREN ()
+   $6 = nterm composto_decl ()
+-> $$ = nterm fun_declaracao ()
+Entering state 8
+Stack now 0 8
+Reducing stack by rule 5 (line 44):
+   $1 = nterm fun_declaracao ()
+-> $$ = nterm declaracao ()
+Entering state 5
+Stack now 0 5
+Reducing stack by rule 3 (line 39):
+   $1 = nterm declaracao ()
+-> $$ = nterm declaracao_lista ()
+Entering state 4
+Stack now 0 4
+Reading a token
+Now at end of input.
+Reducing stack by rule 1 (line 34):
+   $1 = nterm declaracao_lista ()
+-> $$ = nterm programa ()
+Entering state 3
+Stack now 0 3
+Now at end of input.
+Shifting token "end of file" ()
+Entering state 9
+Stack now 0 3 9
+Stack now 0 3 9
+Cleanup: popping token "end of file" ()
+Cleanup: popping nterm programa ()
+Lexer: got int
+Parser: got int
+Lexer: got void
+Lexer: got int
+Parser: got int
+Sucesso na análise sintática

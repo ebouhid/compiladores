@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include "globals.h"
 
+#define YYSTYPE No*
+
 int yylex(void);
 int yyerror(char *);
 extern char *yytext;
@@ -290,7 +292,7 @@ void print_token(int token_val) {
 }
 
 int main() {
-    yydebug = 0;
+    yydebug = 1;
       int token = 1;
       /*while ((token = yylex()) != 0) {  // yylex() returns 0 at the end of input
         print_token(token);
