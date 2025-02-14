@@ -54,9 +54,26 @@ declaracao:
 
 var_declaracao:
       tipo_especificador T_ID T_SEMICOLON {
-        $$ = create_node(yylinenum, $2, declaration_k, var_k);
+        printf("jarbas\n");
+        char* auxLexeme[100];
+        strcpy(auxLexeme, $1->lexmema);
+        printf("auxLexeme: %s\n", auxLexeme);
+        $$ = $1;
+        $$->kind_node = declaration_k;
+        $$->kind_union.decl = (DeclarationKind)var_k;
+        $$->linha = yylinenum;
+        YYSTYPE aux = create_node(yylinenum, auxLexeme, declaration_k, var_k);
       }
-    | tipo_especificador T_ID T_LBRACKET T_NUM T_RBRACKET T_SEMICOLON
+    | tipo_especificador T_ID T_LBRACKET T_NUM T_RBRACKET T_SEMICOLON {
+        $$ = $1;
+        $$->kind_node = declaration_k;
+        $$->kind_union.decl = (DeclarationKind)arr_k;
+        $$->linha = yylinenum;
+        YYSTYPE aux = create_node(yylinenum, $2, declaration_k, arr_k);
+        add_filho($$, aux);
+        YYSTYPE aux2 = create_node(yylinenum, $4, declaration_k, constant_k);
+        add_filho($$, aux2);
+    }
 ;
 
 tipo_especificador:
