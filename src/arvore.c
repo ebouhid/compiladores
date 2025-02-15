@@ -109,19 +109,22 @@ void print_node(No *node){
     printf("Linha: %d, Lexema: %s, Tipo: %s\n", node->linha, node->lexmema, kind_node);
 }
 
-void print_tree(No *tree, int depth){
+void print_tree(No *tree, int depth, int is_irmao){
     if (tree == NULL){return;}
     for (int i = 0; i < depth; i++) {
         printf("  ");
     }
+    if (is_irmao){
+        printf("-");
+    }
     print_node(tree);
-    print_tree(tree->filho[0], depth + 1);
-    print_tree(tree->filho[1], depth + 1);
-    print_tree(tree->filho[2], depth + 1);
-    print_tree(tree->irmao, depth);
+    print_tree(tree->filho[0], depth + 1, 0);
+    print_tree(tree->filho[1], depth + 1, 0);
+    print_tree(tree->filho[2], depth + 1, 0);
+    print_tree(tree->irmao, depth, 1);
 }
 
-/* Comentando para não dar multiple definitions of main
+
 int main(){
     No *tree = create_tree(1, "if", statement_k, if_k);
     No *stmt = create_node(1, "while", statement_k, while_k);
@@ -131,12 +134,12 @@ int main(){
     No *stmt3 = create_node(1, "break", statement_k, break_k);
 
     add_filho(tree, stmt);
-    add_filho(stmt, expr);
+    add_filho(tree, expr);
     add_filho(tree, decl);
-    add_irmao(stmt, stmt2);
+    add_irmao(expr, stmt2);
+    add_filho(expr, stmt3);
 
 
 
-    print_tree(tree, 0);
+    print_tree(tree, 0, 0);
 }
-*/
