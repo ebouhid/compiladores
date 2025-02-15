@@ -240,7 +240,7 @@ expressao:
 
 var:
       f_id { $$ = $1; }
-    | T_ID T_LBRACKET expressao T_RBRACKET { $$ = create_node(yylinenum, yytext, expression_k, arr_k); }
+    | T_ID T_LBRACKET expressao T_RBRACKET { $$ = create_node(yylinenum, id_lexema, expression_k, arr_k); }
 ;
 
 simples_expressao:
@@ -305,8 +305,8 @@ fator:
 ;
 
 ativacao:
-      T_ID T_LPAREN args T_RPAREN { $$ = create_node(yylinenum, yytext, expression_k, ativ_k);}
-    | T_ID T_LPAREN T_RPAREN { $$ = create_node(yylinenum, yytext, expression_k, ativ_k); }
+      T_ID T_LPAREN args T_RPAREN { $$ = create_node(yylinenum, id_lexema, expression_k, ativ_k);}
+    | T_ID T_LPAREN T_RPAREN { $$ = create_node(yylinenum, id_lexema, expression_k, ativ_k); }
 ;
 
 args:
