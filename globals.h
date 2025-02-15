@@ -1,21 +1,7 @@
 #define UNKNOWN_TYPE -1
-
-// Struct dos simbolos
-typedef struct Symbol {
-    char *name;
-    int type;       // Data type (e.g., INT, VOID, etc.)
-    int scope;      // Scope level (0 for global, >0 for local)
-    struct Symbol *next;
-} Symbol;
-
-extern Symbol *symbol_table; // Tabela de simbolos
-extern char *id_lexema;
-
-// Métodos
-void add_symbol(char *name, int type, int scope);
-Symbol *lookup_symbol(char *name);
-void check_declaration(char *name, int scope);
-void check_type_compatibility(int type1, int type2, const char *operation);
+#define HASH_SIZE 128
+#define TABLE_SIZE 100
+#include <stdio.h>
 
 // Árvore de sintaxe abstrata
 #define NUMMAXFILHOS 3
@@ -49,3 +35,33 @@ void free_tree(No *tree);
 void print_node(FILE *file, No *node);
 void print_tree(FILE *file, No *tree, int depth, int is_irmao);
 
+
+
+// Struct dos simbolos
+typedef struct Symbol {
+    unsigned int hash_key;
+    char *name;
+    DeclarationKind id_type;
+    char *type;
+    char *scope;
+    struct Symbol *next;
+} Symbol;
+
+
+typedef struct HashTable {
+    Symbol *table[TABLE_SIZE];
+} HashTable;
+
+
+extern char *id_lexema;
+extern HashTable *symbol_table; // Tabela de simbolos
+extern char *current_scope;  // Controla o escopo atual
+
+// Métodos
+HashTable* create_table();
+unsigned int hash(char *scope, char *name);
+void iterate_tree(No* root, HashTable* symbol_table);
+void add_to_hash_table(Symbol* symbol, HashTable* symbol_table);
+Symbol* create_symbol(char* name, DeclarationKind id_type, char* type, char* scope);
+void get_scope(No* root, char* scope);
+void print_symbol_table(FILE *file, HashTable* symbol_table);

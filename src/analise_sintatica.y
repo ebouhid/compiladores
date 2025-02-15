@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include "globals.h"
 #include <string.h>
+#define HASH_SIZE 128
 
 #define YYSTYPE No*
 
@@ -338,130 +339,11 @@ args_lista:
 
 %%
 
-void print_token(int token_val) {
-      typedef enum {
-    T_IF = 300, T_ELSE, T_WHILE, T_INT, T_VOID, T_RETURN, 
-    T_ID, T_NUM, T_PRC, T_LBRACE, T_RBRACE, T_LPAREN, T_RPAREN, 
-    T_LBRACKET, T_RBRACKET, T_SEMICOLON, T_DOT, T_COMMA, 
-    T_PLUS, T_MINUS, T_TIMES, T_OVER, T_MOD, 
-    T_AND, T_OR, T_NOT, T_NEQ, T_EQ, T_ASSIGN, 
-    T_LT, T_GT, T_LEQ, T_GEQ, T_INVCHAR
-} TokenType;
-    switch (token_val) {
-        case T_IF:
-            fprintf(stderr, "Token: T_IF (300)\n");
-            break;
-        case T_ELSE:
-            fprintf(stderr, "Token: T_ELSE (%d)\n", T_ELSE);
-            break;
-        case T_WHILE:
-            fprintf(stderr, "Token: T_WHILE (%d)\n", T_WHILE);
-            break;
-        case T_INT:
-            fprintf(stderr, "Token: T_INT (%d)\n", T_INT);
-            break;
-        case T_VOID:
-            fprintf(stderr, "Token: T_VOID (%d)\n", T_VOID);
-            break;
-        case T_RETURN:
-            fprintf(stderr, "Token: T_RETURN (%d)\n", T_RETURN);
-            break;
-        case T_ID:
-            fprintf(stderr, "Token: T_ID (%d)\n", T_ID);
-            break;
-        case T_NUM:
-            fprintf(stderr, "Token: T_NUM (%d)\n", T_NUM);
-            break;
-        case T_PRC:
-            fprintf(stderr, "Token: T_PRC (%d)\n", T_PRC);
-            break;
-        case T_LBRACE:
-            fprintf(stderr, "Token: T_LBRACE (%d)\n", T_LBRACE);
-            break;
-        case T_RBRACE:
-            fprintf(stderr, "Token: T_RBRACE (%d)\n", T_RBRACE);
-            break;
-        case T_LPAREN:
-            fprintf(stderr, "Token: T_LPAREN (%d)\n", T_LPAREN);
-            break;
-        case T_RPAREN:
-            fprintf(stderr, "Token: T_RPAREN (%d)\n", T_RPAREN);
-            break;
-        case T_LBRACKET:
-            fprintf(stderr, "Token: T_LBRACKET (%d)\n", T_LBRACKET);
-            break;
-        case T_RBRACKET:
-            fprintf(stderr, "Token: T_RBRACKET (%d)\n", T_RBRACKET);
-            break;
-        case T_SEMICOLON:
-            fprintf(stderr, "Token: T_SEMICOLON (%d)\n", T_SEMICOLON);
-            break;
-        case T_DOT:
-            fprintf(stderr, "Token: T_DOT (%d)\n", T_DOT);
-            break;
-        case T_COMMA:
-            fprintf(stderr, "Token: T_COMMA (%d)\n", T_COMMA);
-            break;
-        case T_PLUS:
-            fprintf(stderr, "Token: T_PLUS (%d)\n", T_PLUS);
-            break;
-        case T_MINUS:
-            fprintf(stderr, "Token: T_MINUS (%d)\n", T_MINUS);
-            break;
-        case T_TIMES:
-            fprintf(stderr, "Token: T_TIMES (%d)\n", T_TIMES);
-            break;
-        case T_OVER:
-            fprintf(stderr, "Token: T_OVER (%d)\n", T_OVER);
-            break;
-        case T_MOD:
-            fprintf(stderr, "Token: T_MOD (%d)\n", T_MOD);
-            break;
-        case T_AND:
-            fprintf(stderr, "Token: T_AND (%d)\n", T_AND);
-            break;
-        case T_OR:
-            fprintf(stderr, "Token: T_OR (%d)\n", T_OR);
-            break;
-        case T_NOT:
-            fprintf(stderr, "Token: T_NOT (%d)\n", T_NOT);
-            break;
-        case T_NEQ:
-            fprintf(stderr, "Token: T_NEQ (%d)\n", T_NEQ);
-            break;
-        case T_EQ:
-            fprintf(stderr, "Token: T_EQ (%d)\n", T_EQ);
-            break;
-        case T_ASSIGN:
-            fprintf(stderr, "Token: T_ASSIGN (%d)\n", T_ASSIGN);
-            break;
-        case T_LT:
-            fprintf(stderr, "Token: T_LT (%d)\n", T_LT);
-            break;
-        case T_GT:
-            fprintf(stderr, "Token: T_GT (%d)\n", T_GT);
-            break;
-        case T_LEQ:
-            fprintf(stderr, "Token: T_LEQ (%d)\n", T_LEQ);
-            break;
-        case T_GEQ:
-            fprintf(stderr, "Token: T_GEQ (%d)\n", T_GEQ);
-            break;
-        case T_INVCHAR:
-            fprintf(stderr, "Token: T_INVCHAR (%d)\n", T_INVCHAR);
-            break;
-        default:
-            fprintf(stderr, "Unknown token: %d\n", token_val);
-    }
-}
-
 int main() {
     FILE *arvore = fopen("arvore.txt", "w");
+    FILE *tabsimb = fopen("tabsimb.txt", "w");
     yydebug = 1;
     int token = 1;
-      /*while ((token = yylex()) != 0) {  // yylex() returns 0 at the end of input
-        print_token(token);
-    }*/
     int sintatica = yyparse();
     if (sintatica == 0) {
         fprintf(stderr, "Sucesso na análise sintática\n");
@@ -469,9 +351,14 @@ int main() {
         fprintf(stderr, "Erro na análise sintática\n");
     }
     print_tree(arvore, raizArvore, 0, 0);
+    
+    HashTable *hashTable = create_table(HASH_SIZE);
+    iterate_tree(raizArvore, hashTable);
+    print_symbol_table(tabsimb, hashTable);
+
     return 0;
 }
 
 int yyerror(char *msg) {
-    fprintf(stderr, stderr, "Erro de sintaxe na linha %d: %s. Token inesperado: '%s'\n", yylinenum, msg, yytext);
+    fprintf(stderr, "Erro de sintaxe na linha %d: %s. Token inesperado: '%s'\n", yylinenum, msg, yytext);
 }

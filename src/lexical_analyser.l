@@ -8,33 +8,9 @@ int yylinenum = 1;  // Contador de linhas
 
 char * id_lexema;
 
-Symbol *symbol_table = NULL;
-
 char tokenWord[MAXLEXEME];
 
-void add_symbol(char *name, int type, int scope) {
-    Symbol *new_symbol = (Symbol *)malloc(sizeof(Symbol));
-    if (!new_symbol) {
-        fprintf(stderr, "Erro: Falha na alocação de memória.\n");
-        exit(1);
-    }
-    new_symbol->name = strdup(name);
-    new_symbol->type = type;
-    new_symbol->scope = scope;
-    new_symbol->next = symbol_table;
-    symbol_table = new_symbol;
-}
 
-Symbol *lookup_symbol(char *name) {
-    Symbol *current = symbol_table;
-    while (current != NULL) {
-        if (strcmp(current->name, name) == 0) {
-            return current;
-        }
-        current = current->next;
-    }
-    return NULL;
-}
 %}
 
 %option noyywrap
@@ -60,9 +36,6 @@ Symbol *lookup_symbol(char *name) {
 "return"         { return T_RETURN; }
 
 [A-Za-z_][A-Za-z0-9_]* { 
-    if (lookup_symbol(yytext) == NULL) {
-        add_symbol(yytext, UNKNOWN_TYPE, 0);
-    }
     id_lexema = strdup(yytext);
     return T_ID;
     
