@@ -5,7 +5,10 @@
 int vet[ 10 ];
 
 int minloc ( int a[], int low, int high )
-{	int i; int x; int k;
+{	
+	int i;
+	int x;
+	int k;
 	k = low;
 	x = a[low];
 	i = low + 1;

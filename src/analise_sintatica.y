@@ -77,7 +77,8 @@ var_declaracao:
         $$->kind_node = declaration_k;
         $$->kind_union.decl = (DeclarationKind)var_k;
         $$->linha = yylinenum;
-        YYSTYPE aux = create_node(yylinenum, heapNameLexeme, declaration_k, var_k);        
+        YYSTYPE aux = create_node(yylinenum, heapNameLexeme, declaration_k, var_k);
+        add_filho($$, aux);        
       }
     | tipo_especificador id T_LBRACKET num T_RBRACKET T_SEMICOLON {
         $$ = $1;
@@ -250,6 +251,8 @@ simples_expressao:
         $$->kind_node = expression_k;
         $$->kind_union.expr = (ExpressionKind)op_k;
         $$->linha = yylinenum;
+        add_filho($$, $1);
+        add_filho($$, $3);
     }
 ;
 
