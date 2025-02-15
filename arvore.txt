@@ -20,7 +20,8 @@ Linha: 5, Lexema: int, Tipo: declaration
       Linha: 12, Lexema: low, Tipo: declaration
     -Linha: 13, Lexema: =, Tipo: expression
       Linha: 13, Lexema: x, Tipo: declaration
-      Linha: 13, Lexema: low, Tipo: expression
+      Linha: 13, Lexema: a, Tipo: expression
+        Linha: 13, Lexema: 0, Tipo: expression
     -Linha: 14, Lexema: =, Tipo: expression
       Linha: 14, Lexema: i, Tipo: declaration
       Linha: 14, Lexema: +, Tipo: expression
@@ -32,11 +33,13 @@ Linha: 5, Lexema: int, Tipo: declaration
         Linha: 15, Lexema: high, Tipo: declaration
       Linha: 20, Lexema: if, Tipo: statement
         Linha: 16, Lexema: <, Tipo: expression
-          Linha: 16, Lexema: i, Tipo: expression
+          Linha: 16, Lexema: a, Tipo: expression
+            Linha: 16, Lexema: low, Tipo: expression
           Linha: 16, Lexema: x, Tipo: declaration
         Linha: 17, Lexema: =, Tipo: expression
           Linha: 17, Lexema: x, Tipo: declaration
-          Linha: 17, Lexema: i, Tipo: expression
+          Linha: 17, Lexema: a, Tipo: expression
+            Linha: 17, Lexema: i, Tipo: expression
         -Linha: 18, Lexema: =, Tipo: expression
           Linha: 18, Lexema: k, Tipo: declaration
           Linha: 18, Lexema: i, Tipo: declaration
@@ -75,12 +78,16 @@ Linha: 5, Lexema: int, Tipo: declaration
         Linha: 30, Lexema: high, Tipo: expression
       -Linha: 31, Lexema: =, Tipo: expression
         Linha: 31, Lexema: t, Tipo: declaration
-        Linha: 31, Lexema: k, Tipo: expression
+        Linha: 31, Lexema: a, Tipo: expression
+          Linha: 31, Lexema: k, Tipo: expression
       -Linha: 32, Lexema: =, Tipo: expression
-        Linha: 32, Lexema: k, Tipo: expression
-        Linha: 32, Lexema: i, Tipo: expression
+        Linha: 32, Lexema: a, Tipo: expression
+          Linha: 32, Lexema: k, Tipo: expression
+        Linha: 32, Lexema: a, Tipo: expression
+          Linha: 32, Lexema: i, Tipo: expression
       -Linha: 33, Lexema: =, Tipo: expression
-        Linha: 33, Lexema: i, Tipo: expression
+        Linha: 33, Lexema: a, Tipo: expression
+          Linha: 33, Lexema: i, Tipo: expression
         Linha: 33, Lexema: t, Tipo: declaration
       -Linha: 34, Lexema: =, Tipo: expression
         Linha: 34, Lexema: i, Tipo: declaration
@@ -100,7 +107,8 @@ Linha: 5, Lexema: int, Tipo: declaration
         Linha: 42, Lexema: i, Tipo: declaration
         Linha: 42, Lexema: 10, Tipo: expression
       Linha: 43, Lexema: =, Tipo: expression
-        Linha: 43, Lexema: i, Tipo: expression
+        Linha: 43, Lexema: vet, Tipo: expression
+          Linha: 43, Lexema: i, Tipo: expression
         Linha: 43, Lexema: input, Tipo: expression
       -Linha: 44, Lexema: =, Tipo: expression
         Linha: 44, Lexema: i, Tipo: declaration

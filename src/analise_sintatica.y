@@ -241,7 +241,14 @@ expressao:
 
 var:
       f_id { $$ = $1; }
-    | T_ID T_LBRACKET expressao T_RBRACKET { $$ = create_node(yylinenum, id_lexema, expression_k, arr_k); }
+    | f_id T_LBRACKET expressao T_RBRACKET { 
+        $$ = $1;
+        $$->kind_node = expression_k;
+        $$->kind_union.expr = (ExpressionKind)arr_k;
+        $3->kind_node = expression_k;
+        $3->kind_union.expr = (ExpressionKind)var_k;
+        add_filho($$, $3);
+        }
 ;
 
 simples_expressao:

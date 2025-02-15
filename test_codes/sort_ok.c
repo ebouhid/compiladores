@@ -10,10 +10,10 @@ int minloc ( int a[], int low, int high )
 	int x;
 	int k;
 	k = low;
-	x = a[low];
+	x = a[0];
 	i = low + 1;
 	while (i < high){
-		if (a[i] < x){
+		if (a[low] < x){
 			x = a[i];
 			k = i;
 		}
