@@ -1,72 +1,7 @@
-Starting parse
-Entering state 0
-Stack now 0
-Reading a token
-Next token is token T_INT ()
-Shifting token T_INT ()
-Entering state 1
-Stack now 0 1
-Reducing stack by rule 8 (line 63):
-   $1 = token T_INT ()
--> $$ = nterm tipo_especificador ()
-Entering state 7
-Stack now 0 7
-Reading a token
-Next token is token T_ID ()
-Shifting token T_ID ()
-Entering state 11
-Stack now 0 7 11
-Reading a token
-Next token is token T_LPAREN ()
-Shifting token T_LPAREN ()
-Entering state 13
-Stack now 0 7 11 13
-Reading a token
-Next token is token T_VOID ()
-Shifting token T_VOID ()
-Entering state 15
-Stack now 0 7 11 13 15
-Reading a token
-Next token is token T_RPAREN ()
-Reducing stack by rule 13 (line 83):
-   $1 = token T_VOID ()
--> $$ = nterm params ()
-Entering state 18
-Stack now 0 7 11 13 18
-Next token is token T_RPAREN ()
-Shifting token T_RPAREN ()
-Entering state 25
-Stack now 0 7 11 13 18 25
-Reading a token
-Next token is token T_LBRACE ()
-Shifting token T_LBRACE ()
-Entering state 22
-Stack now 0 7 11 13 18 25 22
-Reducing stack by rule 20 (line 127):
--> $$ = nterm local_declaracoes ()
-Entering state 28
-Stack now 0 7 11 13 18 25 22 28
-Reading a token
-Next token is token T_INT ()
-Shifting token T_INT ()
-Entering state 1
-Stack now 0 7 11 13 18 25 22 28 1
-Reducing stack by rule 8 (line 63):
-   $1 = token T_INT ()
--> $$ = nterm tipo_especificador ()
-Entering state 40
-Stack now 0 7 11 13 18 25 22 28 40
-Reading a token
-Next token is token T_ID ()
-Shifting token T_ID ()
-Entering state 63
-Stack now 0 7 11 13 18 25 22 28 40 63
-Reading a token
-Next token is token T_SEMICOLON ()
-Shifting token T_SEMICOLON ()
-Entering state 12
-Stack now 0 7 11 13 18 25 22 28 40 63 12
-Reducing stack by rule 6 (line 56):
-   $1 = nterm tipo_especificador ()
-   $2 = token T_ID ()
-   $3 = token T_SEMICOLON ()
+Sucesso na análise sintática
+Lexer: got int
+Lexer: got int
+Lexer: got int
+Lexer: got int
+Lexer: got int
+Lexer: got int

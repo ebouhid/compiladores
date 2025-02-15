@@ -41,10 +41,10 @@ programa:
 ;
 
 declaracao_lista:
-      declaracao_lista declaracao { YYSTYPE aux = $1;
-        if (aux != NULL) {
-            add_irmao(aux, $2);
+      declaracao_lista declaracao {
+        if ($$ != NULL) {
             $$ = $1;
+            add_irmao($$, $2);
         } else {
             $$ = $2;
         }
@@ -109,8 +109,17 @@ fun_declaracao:
         add_filho($$, $4);
         add_filho($$, $6);
       }
-    | tipo_especificador T_ID T_LPAREN T_RPAREN composto_decl
+    | tipo_especificador T_ID T_LPAREN T_RPAREN composto_decl{
+        $$ = $1;
+        $$->kind_union.decl = (DeclarationKind)fun_k;
+        add_filho($$, $5);
+      }
 ;
+f_id:
+      T_ID {
+        strcpy(heapNameLexeme, yytext);
+        heapLinenum = yylinenum;
+      }
 
 params:
       param_lista { $$ = $1; }
@@ -133,7 +142,7 @@ param:
       tipo_especificador T_ID {
         $$ = $1;
         YYSTYPE aux = create_node(yylinenum, yytext, declaration_k, var_k);
-        print_node(aux);
+        // print_node(aux);
         add_filho($$, aux);
       }
     | tipo_especificador T_ID T_LBRACKET T_RBRACKET {
@@ -433,8 +442,9 @@ void print_token(int token_val) {
 }
 
 int main() {
-    yydebug = 1;
-      int token = 1;
+    FILE *arvore = fopen("arvore.txt", "w");
+    yydebug = 0;
+    int token = 1;
       /*while ((token = yylex()) != 0) {  // yylex() returns 0 at the end of input
         print_token(token);
     }*/
@@ -444,6 +454,7 @@ int main() {
     } else {
         fprintf(stderr, "Erro na análise sintática\n");
     }
+    print_tree(arvore, raizArvore, 0, 0);
     return 0;
 }
 

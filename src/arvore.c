@@ -93,7 +93,7 @@ void free_tree(No *tree){
     free(tree);
 }
 
-void print_node(No *node){
+void print_node(FILE *file, No *node){
     if (node == NULL){return;}
     char *kind_node;
 
@@ -107,23 +107,26 @@ void print_node(No *node){
         case declaration_k:
             kind_node = "declaration";
             break;
+        default:
+            kind_node = "unknown";
+            break;
     }
-    printf("Linha: %d, Lexema: %s, Tipo: %s\n", node->linha, node->lexmema, kind_node);
+    fprintf(file, "Linha: %d, Lexema: %s, Tipo: %s\n", node->linha, node->lexmema, kind_node);
 }
 
-void print_tree(No *tree, int depth, int is_irmao){
+void print_tree(FILE *file, No *tree, int depth, int is_irmao){
     if (tree == NULL){return;}
     for (int i = 0; i < depth; i++) {
-        printf("  ");
+        fprintf(file, "  ");
     }
     if (is_irmao){
-        printf("-");
+        fprintf(file, "-");
     }
-    print_node(tree);
-    print_tree(tree->filho[0], depth + 1, 0);
-    print_tree(tree->filho[1], depth + 1, 0);
-    print_tree(tree->filho[2], depth + 1, 0);
-    print_tree(tree->irmao, depth, 1);
+    print_node(file, tree);
+    print_tree(file, tree->filho[0], depth + 1, 0);
+    print_tree(file, tree->filho[1], depth + 1, 0);
+    print_tree(file, tree->filho[2], depth + 1, 0);
+    print_tree(file, tree->irmao, depth, 1);
 }
 
 
@@ -141,7 +144,14 @@ void print_tree(No *tree, int depth, int is_irmao){
 //     add_irmao(expr, stmt2);
 //     add_filho(expr, stmt3);
 
+//     FILE *fp = fopen("tree.txt", "w");
+//     if(fp == NULL){
+//         perror("Erro ao abrir o arquivo para escrita");
+//         exit(1);
+//     }
+//     print_tree(fp, tree, 0, 0);
+//     fclose(fp);
 
-
-//     print_tree(tree, 0, 0);
+//     free_tree(tree);
+//     return 0;
 // }
