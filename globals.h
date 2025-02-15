@@ -30,6 +30,7 @@ typedef struct no
 {
     int linha;
     char lexmema[MAXLEXEME];
+    int max_index; /* -1 para variáveis normais, a partir de 0 para vetor */
     NodeKind kind_node;
     union {
         StatementKind stmt;

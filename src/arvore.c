@@ -13,6 +13,7 @@ typedef struct no
 {
     int linha;
     char lexmema[MAXLEXEME];
+    int max_index; /* -1 para variáveis normais, a partir de 0 para vetor */
     NodeKind kind_node;
     union {
         StatementKind stmt;
@@ -28,6 +29,7 @@ No * create_node(int linha, const char *lexmema, NodeKind kind, int kind_union){
     No *node = malloc(sizeof(No));
     node->linha = linha;
     strncpy(node->lexmema, lexmema, MAXLEXEME);
+    node->max_index = -1;
     node->kind_node = kind;
     node->pai = NULL;
     node->filho[0] = NULL;
@@ -125,21 +127,21 @@ void print_tree(No *tree, int depth, int is_irmao){
 }
 
 
-int main(){
-    No *tree = create_tree(1, "if", statement_k, if_k);
-    No *stmt = create_node(1, "while", statement_k, while_k);
-    No *expr = create_node(1, "op", expression_k, op_k);
-    No *decl = create_node(1, "var", declaration_k, var_k);
-    No *stmt2 = create_node(1, "return", statement_k, return_k);
-    No *stmt3 = create_node(1, "break", statement_k, break_k);
+// int main(){
+//     No *tree = create_tree(1, "if", statement_k, if_k);
+//     No *stmt = create_node(1, "while", statement_k, while_k);
+//     No *expr = create_node(1, "op", expression_k, op_k);
+//     No *decl = create_node(1, "var", declaration_k, var_k);
+//     No *stmt2 = create_node(1, "return", statement_k, return_k);
+//     No *stmt3 = create_node(1, "break", statement_k, break_k);
 
-    add_filho(tree, stmt);
-    add_filho(tree, expr);
-    add_filho(tree, decl);
-    add_irmao(expr, stmt2);
-    add_filho(expr, stmt3);
+//     add_filho(tree, stmt);
+//     add_filho(tree, expr);
+//     add_filho(tree, decl);
+//     add_irmao(expr, stmt2);
+//     add_filho(expr, stmt3);
 
 
 
-    print_tree(tree, 0, 0);
-}
+//     print_tree(tree, 0, 0);
+// }

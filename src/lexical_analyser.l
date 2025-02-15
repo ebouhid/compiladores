@@ -8,6 +8,8 @@ int yylinenum = 1;  // Contador de linhas
 
 Symbol *symbol_table = NULL;
 
+char tokenWord[MAXLEXEME];
+
 void add_symbol(char *name, int type, int scope) {
     Symbol *new_symbol = (Symbol *)malloc(sizeof(Symbol));
     if (!new_symbol) {

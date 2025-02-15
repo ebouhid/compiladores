@@ -2,6 +2,7 @@
 // GLC to C- language
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "globals.h"
 
 #define YYSTYPE No*
@@ -10,7 +11,11 @@ int yylex(void);
 int yyerror(char *);
 extern char *yytext;
 extern int yylinenum;
+
 No* raizArvore = NULL;
+char heapNameLexeme[MAXLEXEME];
+int heapLinenum;
+int heapNumberLexeme;
 %}
 %debug
 
@@ -37,7 +42,7 @@ programa:
 
 declaracao_lista:
       declaracao_lista declaracao { YYSTYPE aux = $1;
-        if (aux != NULL) { /* Icaro, da uma olhada nessa adicao de irmao. */
+        if (aux != NULL) {
             add_irmao(aux, $2);
             $$ = $1;
         } else {
@@ -52,26 +57,38 @@ declaracao:
     | fun_declaracao { $$ = $1; }
 ;
 
+id:
+      T_ID {
+        strcpy(heapNameLexeme, yytext);
+        heapLinenum = yylinenum;
+      }
+;
+
+num:
+      T_NUM {
+        heapNumberLexeme = atoi(yytext);
+        heapLinenum = yylinenum;
+      }
+
 var_declaracao:
-      tipo_especificador T_ID T_SEMICOLON {
-        printf("jarbas\n");
-        char* auxLexeme[100];
-        strcpy(auxLexeme, $1->lexmema);
-        printf("auxLexeme: %s\n", auxLexeme);
+      tipo_especificador id T_SEMICOLON {
         $$ = $1;
         $$->kind_node = declaration_k;
         $$->kind_union.decl = (DeclarationKind)var_k;
         $$->linha = yylinenum;
-        YYSTYPE aux = create_node(yylinenum, auxLexeme, declaration_k, var_k);
+        YYSTYPE aux = create_node(yylinenum, heapNameLexeme, declaration_k, var_k);        
       }
-    | tipo_especificador T_ID T_LBRACKET T_NUM T_RBRACKET T_SEMICOLON {
+    | tipo_especificador id T_LBRACKET num T_RBRACKET T_SEMICOLON {
         $$ = $1;
         $$->kind_node = declaration_k;
         $$->kind_union.decl = (DeclarationKind)arr_k;
         $$->linha = yylinenum;
-        YYSTYPE aux = create_node(yylinenum, $2, declaration_k, arr_k);
-        add_filho($$, aux);
-        YYSTYPE aux2 = create_node(yylinenum, $4, declaration_k, constant_k);
+        YYSTYPE aux1 = create_node(yylinenum, heapNameLexeme, declaration_k, arr_k);
+        add_filho($$, aux1);
+        char heapNumberLexemeStr[10];
+        sprintf(heapNumberLexemeStr, "%d", heapNumberLexeme);
+        YYSTYPE aux2 = create_node(yylinenum, heapNumberLexemeStr, declaration_k, constant_k);
+        aux2->max_index = heapNumberLexeme;
         add_filho($$, aux2);
     }
 ;
@@ -115,12 +132,13 @@ param_lista:
 param:
       tipo_especificador T_ID {
         $$ = $1;
-        YYSTYPE aux = create_node(yylinenum, $2, declaration_k, var_k);
+        YYSTYPE aux = create_node(yylinenum, yytext, declaration_k, var_k);
+        print_node(aux);
         add_filho($$, aux);
       }
     | tipo_especificador T_ID T_LBRACKET T_RBRACKET {
         $$ = $1;
-        YYSTYPE aux = create_node(yylinenum, $2, declaration_k, arr_k);
+        YYSTYPE aux = create_node(yylinenum, yytext, declaration_k, arr_k);
         add_filho($$, aux);
     }
 ;
@@ -277,8 +295,8 @@ fator:
 ;
 
 ativacao:
-      T_ID T_LPAREN args T_RPAREN { $$ = create_node(yylinenum, $1, expression_k, ativ_k);}
-    | T_ID T_LPAREN T_RPAREN { $$ = create_node(yylinenum, $1, expression_k, ativ_k); }
+      T_ID T_LPAREN args T_RPAREN { $$ = create_node(yylinenum, yytext, expression_k, ativ_k);}
+    | T_ID T_LPAREN T_RPAREN { $$ = create_node(yylinenum, yytext, expression_k, ativ_k); }
 ;
 
 args:
@@ -308,109 +326,109 @@ void print_token(int token_val) {
 } TokenType;
     switch (token_val) {
         case T_IF:
-            printf("Token: T_IF (300)\n");
+            fprintf(stderr, "Token: T_IF (300)\n");
             break;
         case T_ELSE:
-            printf("Token: T_ELSE (%d)\n", T_ELSE);
+            fprintf(stderr, "Token: T_ELSE (%d)\n", T_ELSE);
             break;
         case T_WHILE:
-            printf("Token: T_WHILE (%d)\n", T_WHILE);
+            fprintf(stderr, "Token: T_WHILE (%d)\n", T_WHILE);
             break;
         case T_INT:
-            printf("Token: T_INT (%d)\n", T_INT);
+            fprintf(stderr, "Token: T_INT (%d)\n", T_INT);
             break;
         case T_VOID:
-            printf("Token: T_VOID (%d)\n", T_VOID);
+            fprintf(stderr, "Token: T_VOID (%d)\n", T_VOID);
             break;
         case T_RETURN:
-            printf("Token: T_RETURN (%d)\n", T_RETURN);
+            fprintf(stderr, "Token: T_RETURN (%d)\n", T_RETURN);
             break;
         case T_ID:
-            printf("Token: T_ID (%d)\n", T_ID);
+            fprintf(stderr, "Token: T_ID (%d)\n", T_ID);
             break;
         case T_NUM:
-            printf("Token: T_NUM (%d)\n", T_NUM);
+            fprintf(stderr, "Token: T_NUM (%d)\n", T_NUM);
             break;
         case T_PRC:
-            printf("Token: T_PRC (%d)\n", T_PRC);
+            fprintf(stderr, "Token: T_PRC (%d)\n", T_PRC);
             break;
         case T_LBRACE:
-            printf("Token: T_LBRACE (%d)\n", T_LBRACE);
+            fprintf(stderr, "Token: T_LBRACE (%d)\n", T_LBRACE);
             break;
         case T_RBRACE:
-            printf("Token: T_RBRACE (%d)\n", T_RBRACE);
+            fprintf(stderr, "Token: T_RBRACE (%d)\n", T_RBRACE);
             break;
         case T_LPAREN:
-            printf("Token: T_LPAREN (%d)\n", T_LPAREN);
+            fprintf(stderr, "Token: T_LPAREN (%d)\n", T_LPAREN);
             break;
         case T_RPAREN:
-            printf("Token: T_RPAREN (%d)\n", T_RPAREN);
+            fprintf(stderr, "Token: T_RPAREN (%d)\n", T_RPAREN);
             break;
         case T_LBRACKET:
-            printf("Token: T_LBRACKET (%d)\n", T_LBRACKET);
+            fprintf(stderr, "Token: T_LBRACKET (%d)\n", T_LBRACKET);
             break;
         case T_RBRACKET:
-            printf("Token: T_RBRACKET (%d)\n", T_RBRACKET);
+            fprintf(stderr, "Token: T_RBRACKET (%d)\n", T_RBRACKET);
             break;
         case T_SEMICOLON:
-            printf("Token: T_SEMICOLON (%d)\n", T_SEMICOLON);
+            fprintf(stderr, "Token: T_SEMICOLON (%d)\n", T_SEMICOLON);
             break;
         case T_DOT:
-            printf("Token: T_DOT (%d)\n", T_DOT);
+            fprintf(stderr, "Token: T_DOT (%d)\n", T_DOT);
             break;
         case T_COMMA:
-            printf("Token: T_COMMA (%d)\n", T_COMMA);
+            fprintf(stderr, "Token: T_COMMA (%d)\n", T_COMMA);
             break;
         case T_PLUS:
-            printf("Token: T_PLUS (%d)\n", T_PLUS);
+            fprintf(stderr, "Token: T_PLUS (%d)\n", T_PLUS);
             break;
         case T_MINUS:
-            printf("Token: T_MINUS (%d)\n", T_MINUS);
+            fprintf(stderr, "Token: T_MINUS (%d)\n", T_MINUS);
             break;
         case T_TIMES:
-            printf("Token: T_TIMES (%d)\n", T_TIMES);
+            fprintf(stderr, "Token: T_TIMES (%d)\n", T_TIMES);
             break;
         case T_OVER:
-            printf("Token: T_OVER (%d)\n", T_OVER);
+            fprintf(stderr, "Token: T_OVER (%d)\n", T_OVER);
             break;
         case T_MOD:
-            printf("Token: T_MOD (%d)\n", T_MOD);
+            fprintf(stderr, "Token: T_MOD (%d)\n", T_MOD);
             break;
         case T_AND:
-            printf("Token: T_AND (%d)\n", T_AND);
+            fprintf(stderr, "Token: T_AND (%d)\n", T_AND);
             break;
         case T_OR:
-            printf("Token: T_OR (%d)\n", T_OR);
+            fprintf(stderr, "Token: T_OR (%d)\n", T_OR);
             break;
         case T_NOT:
-            printf("Token: T_NOT (%d)\n", T_NOT);
+            fprintf(stderr, "Token: T_NOT (%d)\n", T_NOT);
             break;
         case T_NEQ:
-            printf("Token: T_NEQ (%d)\n", T_NEQ);
+            fprintf(stderr, "Token: T_NEQ (%d)\n", T_NEQ);
             break;
         case T_EQ:
-            printf("Token: T_EQ (%d)\n", T_EQ);
+            fprintf(stderr, "Token: T_EQ (%d)\n", T_EQ);
             break;
         case T_ASSIGN:
-            printf("Token: T_ASSIGN (%d)\n", T_ASSIGN);
+            fprintf(stderr, "Token: T_ASSIGN (%d)\n", T_ASSIGN);
             break;
         case T_LT:
-            printf("Token: T_LT (%d)\n", T_LT);
+            fprintf(stderr, "Token: T_LT (%d)\n", T_LT);
             break;
         case T_GT:
-            printf("Token: T_GT (%d)\n", T_GT);
+            fprintf(stderr, "Token: T_GT (%d)\n", T_GT);
             break;
         case T_LEQ:
-            printf("Token: T_LEQ (%d)\n", T_LEQ);
+            fprintf(stderr, "Token: T_LEQ (%d)\n", T_LEQ);
             break;
         case T_GEQ:
-            printf("Token: T_GEQ (%d)\n", T_GEQ);
+            fprintf(stderr, "Token: T_GEQ (%d)\n", T_GEQ);
             break;
         case T_INVCHAR:
-            printf("Token: T_INVCHAR (%d)\n", T_INVCHAR);
+            fprintf(stderr, "Token: T_INVCHAR (%d)\n", T_INVCHAR);
             break;
         default:
-            printf("Unknown token: %d\n", token_val);
+            fprintf(stderr, "Unknown token: %d\n", token_val);
     }
 }
 
@@ -422,13 +440,13 @@ int main() {
     }*/
     int sintatica = yyparse();
     if (sintatica == 0) {
-        printf("Sucesso na análise sintática\n");
+        fprintf(stderr, "Sucesso na análise sintática\n");
     } else {
-        printf("Erro na análise sintática\n");
+        fprintf(stderr, "Erro na análise sintática\n");
     }
     return 0;
 }
 
 int yyerror(char *msg) {
-    fprintf(stderr, "Erro de sintaxe na linha %d: %s. Token inesperado: '%s'\n", yylinenum, msg, yytext);
+    fprintf(stderr, stderr, "Erro de sintaxe na linha %d: %s. Token inesperado: '%s'\n", yylinenum, msg, yytext);
 }
