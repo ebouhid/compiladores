@@ -78,7 +78,7 @@ No * add_irmao(No *irmao, No *novo){
     while (irmao->irmao != NULL){
         irmao = irmao->irmao;
     }
-
+    novo->pai = irmao->pai;
     irmao->irmao = novo;
     
     return novo;
@@ -111,7 +111,7 @@ void print_node(FILE *file, No *node){
             kind_node = "unknown";
             break;
     }
-    fprintf(file, "Linha: %d, Lexema: %s, Tipo: %s\n", node->linha, node->lexmema, kind_node);
+    fprintf(file, "Linha: %d, Lexema: %s, Tipo: %s, DeclarationType: %s\n", node->linha, node->lexmema, kind_node, node->kind_node == declaration_k ? node->kind_union.decl == var_k ? "var" : "fun" : "");
 }
 
 void print_tree(FILE *file, No *tree, int depth, int is_irmao){

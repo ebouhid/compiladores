@@ -1,5 +1,5 @@
 int main(int a, int r) {
-    a = s - 2;
+    a = r - 2;
 }
 
 void adicionar(){

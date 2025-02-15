@@ -1,139 +1,15 @@
-Linha: 5, Lexema: int, Tipo: declaration
-  Linha: 5, Lexema: vet, Tipo: declaration
-  Linha: 5, Lexema: 10, Tipo: declaration
--Linha: 7, Lexema: int, Tipo: declaration
-  Linha: 7, Lexema: minloc, Tipo: expression
-    Linha: 7, Lexema: int, Tipo: declaration
-      Linha: 7, Lexema: a, Tipo: declaration
-    -Linha: 7, Lexema: int, Tipo: declaration
-      Linha: 7, Lexema: low, Tipo: declaration
-    -Linha: 7, Lexema: int, Tipo: declaration
-      Linha: 7, Lexema: high, Tipo: declaration
-    Linha: 9, Lexema: int, Tipo: declaration
-      Linha: 9, Lexema: i, Tipo: declaration
-    -Linha: 10, Lexema: int, Tipo: declaration
-      Linha: 10, Lexema: x, Tipo: declaration
-    -Linha: 11, Lexema: int, Tipo: declaration
-      Linha: 11, Lexema: k, Tipo: declaration
-    -Linha: 12, Lexema: =, Tipo: expression
-      Linha: 12, Lexema: k, Tipo: expression
-      Linha: 12, Lexema: low, Tipo: expression
-    -Linha: 13, Lexema: =, Tipo: expression
-      Linha: 13, Lexema: x, Tipo: expression
-      Linha: 13, Lexema: a, Tipo: expression
-        Linha: 13, Lexema: 0, Tipo: expression
-    -Linha: 14, Lexema: =, Tipo: expression
-      Linha: 14, Lexema: i, Tipo: expression
-      Linha: 14, Lexema: +, Tipo: expression
-        Linha: 14, Lexema: low, Tipo: expression
-        Linha: 14, Lexema: 1, Tipo: expression
-    -Linha: 21, Lexema: while, Tipo: statement
-      Linha: 15, Lexema: <, Tipo: expression
-        Linha: 15, Lexema: i, Tipo: expression
-        Linha: 15, Lexema: high, Tipo: expression
-      Linha: 20, Lexema: if, Tipo: statement
-        Linha: 16, Lexema: <, Tipo: expression
-          Linha: 16, Lexema: a, Tipo: expression
-            Linha: 16, Lexema: low, Tipo: expression
-          Linha: 16, Lexema: x, Tipo: expression
-        Linha: 17, Lexema: =, Tipo: expression
-          Linha: 17, Lexema: x, Tipo: expression
-          Linha: 17, Lexema: a, Tipo: expression
-            Linha: 17, Lexema: i, Tipo: expression
-        -Linha: 18, Lexema: =, Tipo: expression
-          Linha: 18, Lexema: k, Tipo: expression
-          Linha: 18, Lexema: i, Tipo: expression
-      -Linha: 20, Lexema: =, Tipo: expression
-        Linha: 20, Lexema: i, Tipo: expression
-        Linha: 20, Lexema: +, Tipo: expression
-          Linha: 20, Lexema: i, Tipo: expression
-          Linha: 20, Lexema: 1, Tipo: expression
-    -Linha: 22, Lexema: return, Tipo: statement
-      Linha: 22, Lexema: k, Tipo: expression
--Linha: 25, Lexema: void, Tipo: declaration
-  Linha: 25, Lexema: sort, Tipo: expression
-    Linha: 25, Lexema: int, Tipo: declaration
-      Linha: 25, Lexema: a, Tipo: declaration
-    -Linha: 25, Lexema: int, Tipo: declaration
-      Linha: 25, Lexema: low, Tipo: declaration
-    -Linha: 25, Lexema: int, Tipo: declaration
-      Linha: 25, Lexema: high, Tipo: declaration
-    Linha: 26, Lexema: int, Tipo: declaration
-      Linha: 26, Lexema: i, Tipo: declaration
-    -Linha: 26, Lexema: int, Tipo: declaration
-      Linha: 26, Lexema: k, Tipo: declaration
-    -Linha: 27, Lexema: =, Tipo: expression
-      Linha: 27, Lexema: i, Tipo: expression
-      Linha: 27, Lexema: low, Tipo: expression
-    -Linha: 35, Lexema: while, Tipo: statement
-      Linha: 28, Lexema: <, Tipo: expression
-        Linha: 28, Lexema: i, Tipo: expression
-        Linha: 28, Lexema: -, Tipo: expression
-          Linha: 28, Lexema: high, Tipo: expression
-          Linha: 28, Lexema: 1, Tipo: expression
-      Linha: 29, Lexema: int, Tipo: declaration
-        Linha: 29, Lexema: t, Tipo: declaration
-      -Linha: 30, Lexema: =, Tipo: expression
-        Linha: 30, Lexema: k, Tipo: expression
-        Linha: 30, Lexema: high, Tipo: expression
-          Linha: 30, Lexema: a, Tipo: expression
-          -Linha: 30, Lexema: i, Tipo: expression
-          -Linha: 30, Lexema: high, Tipo: expression
-      -Linha: 31, Lexema: =, Tipo: expression
-        Linha: 31, Lexema: t, Tipo: expression
-        Linha: 31, Lexema: a, Tipo: expression
-          Linha: 31, Lexema: k, Tipo: expression
-      -Linha: 32, Lexema: =, Tipo: expression
-        Linha: 32, Lexema: a, Tipo: expression
-          Linha: 32, Lexema: k, Tipo: expression
-        Linha: 32, Lexema: a, Tipo: expression
-          Linha: 32, Lexema: i, Tipo: expression
-      -Linha: 33, Lexema: =, Tipo: expression
-        Linha: 33, Lexema: a, Tipo: expression
-          Linha: 33, Lexema: i, Tipo: expression
-        Linha: 33, Lexema: t, Tipo: expression
-      -Linha: 34, Lexema: =, Tipo: expression
-        Linha: 34, Lexema: i, Tipo: expression
-        Linha: 34, Lexema: +, Tipo: expression
-          Linha: 34, Lexema: i, Tipo: expression
-          Linha: 34, Lexema: 1, Tipo: expression
--Linha: 38, Lexema: void, Tipo: declaration
-  Linha: 38, Lexema: main, Tipo: expression
-    Linha: 38, Lexema: void, Tipo: expression
-    Linha: 40, Lexema: int, Tipo: declaration
-      Linha: 40, Lexema: i, Tipo: declaration
-    -Linha: 41, Lexema: =, Tipo: expression
-      Linha: 41, Lexema: i, Tipo: expression
-      Linha: 41, Lexema: 0, Tipo: expression
-    -Linha: 45, Lexema: while, Tipo: statement
-      Linha: 42, Lexema: <, Tipo: expression
-        Linha: 42, Lexema: i, Tipo: expression
-        Linha: 42, Lexema: 10, Tipo: expression
-      Linha: 43, Lexema: =, Tipo: expression
-        Linha: 43, Lexema: vet, Tipo: expression
-          Linha: 43, Lexema: i, Tipo: expression
-        Linha: 43, Lexema: input, Tipo: expression
-      -Linha: 44, Lexema: =, Tipo: expression
-        Linha: 44, Lexema: i, Tipo: expression
-        Linha: 44, Lexema: +, Tipo: expression
-          Linha: 44, Lexema: i, Tipo: expression
-          Linha: 44, Lexema: 1, Tipo: expression
-    -Linha: 46, Lexema: vet, Tipo: expression
-      Linha: 46, Lexema: vet, Tipo: expression
-      -Linha: 46, Lexema: 0, Tipo: expression
-      -Linha: 46, Lexema: 10, Tipo: expression
-    -Linha: 47, Lexema: =, Tipo: expression
-      Linha: 47, Lexema: i, Tipo: expression
-      Linha: 47, Lexema: 0, Tipo: expression
-    -Linha: 51, Lexema: while, Tipo: statement
-      Linha: 48, Lexema: <, Tipo: expression
-        Linha: 48, Lexema: i, Tipo: expression
-        Linha: 48, Lexema: 10, Tipo: expression
-      Linha: 49, Lexema: i, Tipo: expression
-        Linha: 49, Lexema: vet, Tipo: expression
-          Linha: 49, Lexema: i, Tipo: expression
-      -Linha: 50, Lexema: =, Tipo: expression
-        Linha: 50, Lexema: i, Tipo: expression
-        Linha: 50, Lexema: +, Tipo: expression
-          Linha: 50, Lexema: i, Tipo: expression
-          Linha: 50, Lexema: 1, Tipo: expression
+Linha: 1, Lexema: int, Tipo: declaration, DeclarationType: fun
+  Linha: 1, Lexema: main, Tipo: expression, DeclarationType: 
+    Linha: 1, Lexema: int, Tipo: declaration, DeclarationType: var
+      Linha: 1, Lexema: a, Tipo: declaration, DeclarationType: var
+    -Linha: 1, Lexema: int, Tipo: declaration, DeclarationType: var
+      Linha: 1, Lexema: r, Tipo: declaration, DeclarationType: var
+    Linha: 2, Lexema: =, Tipo: expression, DeclarationType: 
+      Linha: 2, Lexema: a, Tipo: expression, DeclarationType: 
+      Linha: 2, Lexema: -, Tipo: expression, DeclarationType: 
+        Linha: 2, Lexema: r, Tipo: expression, DeclarationType: 
+        Linha: 2, Lexema: 2, Tipo: expression, DeclarationType: 
+-Linha: 5, Lexema: void, Tipo: declaration, DeclarationType: fun
+  Linha: 5, Lexema: adicionar, Tipo: expression, DeclarationType: 
+    Linha: 6, Lexema: return, Tipo: statement, DeclarationType: 
+      Linha: 6, Lexema: 5, Tipo: expression, DeclarationType: 

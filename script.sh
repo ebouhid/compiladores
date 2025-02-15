@@ -8,4 +8,4 @@ bison -d src/analise_sintatica.y
 gcc -o compiler lex.yy.c analise_sintatica.tab.c src/arvore.c -lfl
 
 # Run the compiled program
-./compiler < test_codes/sort_ok.c > output.txt 2>&1
+./compiler < test_codes/very_basic_ok.c > output.txt 2>&1
