@@ -1,8 +1,15 @@
 Linha: 1, Lexema: int, Tipo: declaration
-  Linha: 1, Lexema: int, Tipo: declaration
-    Linha: 1, Lexema: ), Tipo: declaration
-  Linha: 2, Lexema: =, Tipo: expression
-    Linha: 2, Lexema: s, Tipo: declaration
-    Linha: 2, Lexema: -, Tipo: expression
-      Linha: 2, Lexema: s, Tipo: declaration
-      Linha: 2, Lexema: 2, Tipo: expression
+  Linha: 1, Lexema: main, Tipo: declaration
+    Linha: 1, Lexema: int, Tipo: declaration
+      Linha: 1, Lexema: a, Tipo: declaration
+    -Linha: 1, Lexema: int, Tipo: declaration
+      Linha: 1, Lexema: r, Tipo: declaration
+    Linha: 2, Lexema: =, Tipo: expression
+      Linha: 2, Lexema: a, Tipo: declaration
+      Linha: 2, Lexema: -, Tipo: expression
+        Linha: 2, Lexema: s, Tipo: declaration
+        Linha: 2, Lexema: 2, Tipo: expression
+-Linha: 5, Lexema: void, Tipo: declaration
+  Linha: 5, Lexema: adicionar, Tipo: declaration
+    Linha: 6, Lexema: return, Tipo: statement
+      Linha: 6, Lexema: 5, Tipo: expression

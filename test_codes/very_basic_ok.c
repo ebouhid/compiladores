@@ -1,3 +1,7 @@
-int main(int s) {
-    s = s - 2;
+int main(int a, int r) {
+    a = s - 2;
+}
+
+void adicionar(){
+    return 5;
 }

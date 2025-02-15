@@ -60,7 +60,7 @@ declaracao:
 
 id:
       T_ID {
-        strcpy(heapNameLexeme, yytext);
+        strcpy(heapNameLexeme, id_lexema);
         heapLinenum = yylinenum;
       }
 ;
@@ -104,16 +104,18 @@ tipo_especificador:
 ;
 
 fun_declaracao:
-      tipo_especificador T_ID T_LPAREN params T_RPAREN composto_decl {
+      tipo_especificador f_id T_LPAREN params T_RPAREN composto_decl {
         $$ = $1;
         $$->kind_union.decl = (DeclarationKind)fun_k;
-        add_filho($$, $4);
-        add_filho($$, $6);
+        add_filho($2, $4);
+        add_filho($$, $2);
+        add_filho($2, $6);
       }
-    | tipo_especificador T_ID T_LPAREN T_RPAREN composto_decl{
+    | tipo_especificador f_id T_LPAREN T_RPAREN composto_decl{
         $$ = $1;
         $$->kind_union.decl = (DeclarationKind)fun_k;
-        add_filho($$, $5);
+        add_filho($$, $2);
+        add_filho($2, $5);
       }
 ;
 f_id:
@@ -141,12 +143,12 @@ param_lista:
 param:
       tipo_especificador T_ID {
         $$ = $1;
-        YYSTYPE aux = create_node(yylinenum, yytext, declaration_k, var_k);
+        YYSTYPE aux = create_node(yylinenum, id_lexema, declaration_k, var_k);
         add_filho($$, aux);
       }
     | tipo_especificador T_ID T_LBRACKET T_RBRACKET {
         $$ = $1;
-        YYSTYPE aux = create_node(yylinenum, yytext, declaration_k, arr_k);
+        YYSTYPE aux = create_node(yylinenum, id_lexema, declaration_k, arr_k);
         add_filho($$, aux);
     }
 ;
