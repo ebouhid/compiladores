@@ -121,7 +121,7 @@ fun_declaracao:
 ;
 f_id:
       T_ID {
-        $$ = create_node(yylinenum, id_lexema, declaration_k, var_k);
+        $$ = create_node(yylinenum, id_lexema, expression_k, var_k);
       }
 ;
 params:
@@ -315,12 +315,15 @@ fator:
 ;
 
 ativacao:
-      T_ID T_LPAREN args T_RPAREN { $$ = create_node(yylinenum, id_lexema, expression_k, ativ_k);}
+      T_ID T_LPAREN args T_RPAREN { 
+        $$ = create_node(yylinenum, id_lexema, expression_k, ativ_k);
+        add_filho($$, $3);
+        }
     | T_ID T_LPAREN T_RPAREN { $$ = create_node(yylinenum, id_lexema, expression_k, ativ_k); }
 ;
 
 args:
-    args_lista
+    args_lista { $$ = $1; }
 ;
 
 args_lista:
@@ -454,7 +457,7 @@ void print_token(int token_val) {
 
 int main() {
     FILE *arvore = fopen("arvore.txt", "w");
-    yydebug = 0;
+    yydebug = 1;
     int token = 1;
       /*while ((token = yylex()) != 0) {  // yylex() returns 0 at the end of input
         print_token(token);
