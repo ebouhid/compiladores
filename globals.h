@@ -47,5 +47,5 @@ No * add_filho(No *pai, No *filho);
 No * add_irmao(No *irmao, No *novo);
 void free_tree(No *tree);
 void print_node(No *node);
-void print_tree(No *tree, int depth);
+void print_tree(No *tree, int depth, int is_irmao);
 
