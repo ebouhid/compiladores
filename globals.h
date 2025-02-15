@@ -9,6 +9,7 @@ typedef struct Symbol {
 } Symbol;
 
 extern Symbol *symbol_table; // Tabela de simbolos
+extern char *id_lexema;
 
 // Métodos
 void add_symbol(char *name, int type, int scope);

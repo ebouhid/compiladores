@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "globals.h"
+#include <string.h>
 
 #define YYSTYPE No*
 
@@ -117,10 +118,9 @@ fun_declaracao:
 ;
 f_id:
       T_ID {
-        strcpy(heapNameLexeme, yytext);
-        heapLinenum = yylinenum;
+        $$ = create_node(yylinenum, id_lexema, declaration_k, var_k);
       }
-
+;
 params:
       param_lista { $$ = $1; }
     | T_VOID {
@@ -142,7 +142,6 @@ param:
       tipo_especificador T_ID {
         $$ = $1;
         YYSTYPE aux = create_node(yylinenum, yytext, declaration_k, var_k);
-        // print_node(aux);
         add_filho($$, aux);
       }
     | tipo_especificador T_ID T_LBRACKET T_RBRACKET {
@@ -238,7 +237,7 @@ expressao:
 ;
 
 var:
-      T_ID { $$ = create_node(yylinenum, yytext, expression_k, id_k); }
+      f_id { $$ = $1; }
     | T_ID T_LBRACKET expressao T_RBRACKET { $$ = create_node(yylinenum, yytext, expression_k, arr_k); }
 ;
 

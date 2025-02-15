@@ -6,6 +6,8 @@
 
 int yylinenum = 1;  // Contador de linhas
 
+char * id_lexema;
+
 Symbol *symbol_table = NULL;
 
 char tokenWord[MAXLEXEME];
@@ -53,18 +55,21 @@ Symbol *lookup_symbol(char *name) {
 "if"             { return T_IF; }
 "else"           { return T_ELSE; }
 "while"          { return T_WHILE; }
-"int"            { printf("Lexer: got int\n");return T_INT; }
-"void"           { printf("Lexer: got void\n");return T_VOID; }
+"int"            { return T_INT; }
+"void"           { return T_VOID; }
 "return"         { return T_RETURN; }
 
 [A-Za-z_][A-Za-z0-9_]* { 
     if (lookup_symbol(yytext) == NULL) {
         add_symbol(yytext, UNKNOWN_TYPE, 0);
     }
+    id_lexema = strdup(yytext);
     return T_ID;
+    
+
 }
 
-[0-9]+          { return T_NUM; }
+[0-9]+          {return T_NUM; }
 
 "{"             { return T_LBRACE; }
 "}"             { return T_RBRACE; }

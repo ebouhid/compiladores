@@ -1,7 +1,1 @@
 Sucesso na análise sintática
-Lexer: got int
-Lexer: got int
-Lexer: got int
-Lexer: got int
-Lexer: got int
-Lexer: got int
