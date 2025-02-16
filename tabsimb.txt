@@ -1,0 +1,14 @@
+Hash: 86025259 Linha: 6, Name: jarbas, ID Type: 0, Type: int, Scope: main
+Hash: 639801941 Linha: 12, Name: sakura, ID Type: 0, Type: int, Scope: rogerio
+Hash: 2376819838 Linha: 1, Name: a, ID Type: 0, Type: int, Scope: ribamar
+Hash: 2376819839 Linha: 1, Name: b, ID Type: 0, Type: int, Scope: ribamar
+Hash: 2376819840 Linha: 1, Name: c, ID Type: 0, Type: int, Scope: ribamar
+Hash: 1293766305 Linha: 5, Name: main, ID Type: 1, Type: int, Scope: GLOBAL
+Hash: 749746941 Linha: 5, Name: beija_flor, ID Type: 0, Type: int, Scope: main
+Hash: 4215285504 Linha: 1, Name: ribamar, ID Type: 1, Type: void, Scope: GLOBAL
+Hash: 2210850569 Linha: 16, Name: renato, ID Type: 1, Type: void, Scope: GLOBAL
+Hash: 3213394191 Linha: 5, Name: a, ID Type: 0, Type: int, Scope: main
+Hash: 3213394208 Linha: 5, Name: r, ID Type: 0, Type: int, Scope: main
+Hash: 96834933 Linha: 12, Name: rogerio, ID Type: 1, Type: int, Scope: GLOBAL
+Hash: 3057588104 Linha: 12, Name: gaara, ID Type: 0, Type: int, Scope: rogerio
+Hash: 210700746 Linha: 12, Name: x, ID Type: 0, Type: int, Scope: rogerio

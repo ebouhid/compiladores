@@ -1,21 +1,6 @@
 #define UNKNOWN_TYPE -1
-
-// Struct dos simbolos
-typedef struct Symbol {
-    char *name;
-    int type;       // Data type (e.g., INT, VOID, etc.)
-    int scope;      // Scope level (0 for global, >0 for local)
-    struct Symbol *next;
-} Symbol;
-
-extern Symbol *symbol_table; // Tabela de simbolos
-extern char *id_lexema;
-
-// Métodos
-void add_symbol(char *name, int type, int scope);
-Symbol *lookup_symbol(char *name);
-void check_declaration(char *name, int scope);
-void check_type_compatibility(int type1, int type2, const char *operation);
+#define TABLE_SIZE 512
+#include <stdio.h>
 
 // Árvore de sintaxe abstrata
 #define NUMMAXFILHOS 3
@@ -24,12 +9,13 @@ void check_type_compatibility(int type1, int type2, const char *operation);
 typedef enum {statement_k, expression_k, declaration_k} NodeKind;
 typedef enum {if_k, while_k, return_k, break_k, continue_k, expression_statement_k} StatementKind;
 typedef enum {op_k, constant_k, id_k, type_k, arr_k, ativ_k, assign_k} ExpressionKind;
-typedef enum {var_k, fun_k} DeclarationKind;
+typedef enum {var_k, fun_k, unknown_k} DeclarationKind;
 
-typedef struct no {
+typedef struct no
+{
     int linha;
     char lexmema[MAXLEXEME];
-    int max_index; /* -1 para variáveis normais, a partir de 0 para vetor */
+    int max_index;
     NodeKind kind_node;
     union {
         StatementKind stmt;
@@ -39,6 +25,7 @@ typedef struct no {
     struct no *pai;
     struct no *filho[NUMMAXFILHOS];
     struct no *irmao;
+    struct no *prev_irmao;
 } No; // Nó da árvore de sintaxe abstrata
 
 No * create_node(int linha, const char *lexmema, NodeKind kind, int kind_union);
@@ -49,3 +36,41 @@ void free_tree(No *tree);
 void print_node(FILE *file, No *node);
 void print_tree(FILE *file, No *tree, int depth, int is_irmao);
 
+
+
+// Struct dos simbolos
+typedef struct Symbol {
+    unsigned int hash_key;
+    int linha;
+    char *name;
+    DeclarationKind id_type;
+    char *type;
+    char *scope;
+    struct Symbol *next;
+} Symbol;
+
+
+typedef struct HashTable {
+    Symbol *table[TABLE_SIZE];
+} HashTable;
+
+
+extern char *id_lexema;
+extern HashTable *symbol_table; // Tabela de simbolos
+extern char *current_scope;  // Controla o escopo atual
+extern int main_declared;
+
+// Métodos
+HashTable* create_table();
+unsigned int hash(char *scope, char *name);
+void iterate_tree(No* root, HashTable* symbol_table);
+void add_to_hash_table(Symbol* symbol, HashTable* symbol_table);
+Symbol* create_symbol(char* name, int linha, DeclarationKind id_type, char* type, char* scope);
+char* get_scope(No* root);
+void print_symbol_table(FILE *file, HashTable* symbol_table);
+Symbol* find_symbol(HashTable* symbol_table, char* name, char* scope);
+
+// Análise semântica
+void semantic_analysis(No* root, HashTable* symbol_table);
+void check_main_function();
+int count_symbol(char* name, char* scope, HashTable* symbol_table);
