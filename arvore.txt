@@ -1,15 +1,15 @@
-Linha: 1, Lexema: int, Tipo: declaration
-  Linha: 1, Lexema: main, Tipo: expression
-    Linha: 1, Lexema: int, Tipo: declaration
-      Linha: 1, Lexema: a, Tipo: declaration
-    -Linha: 1, Lexema: int, Tipo: declaration
-      Linha: 1, Lexema: r, Tipo: declaration
-    Linha: 2, Lexema: =, Tipo: expression
-      Linha: 2, Lexema: a, Tipo: expression
-      Linha: 2, Lexema: -, Tipo: expression
-        Linha: 2, Lexema: s, Tipo: expression
-        Linha: 2, Lexema: 2, Tipo: expression
--Linha: 5, Lexema: void, Tipo: declaration
-  Linha: 5, Lexema: adicionar, Tipo: expression
-    Linha: 6, Lexema: return, Tipo: statement
-      Linha: 6, Lexema: 5, Tipo: expression
+Linha: 1, Lexema: int, Tipo: declaration, Tipo_Union: 1, Pai: (null)
+  Linha: 1, Lexema: main, Tipo: declaration, Tipo_Union: 1, Pai: int
+    Linha: 1, Lexema: int, Tipo: declaration, Tipo_Union: 0, Pai: main
+      Linha: 1, Lexema: a, Tipo: declaration, Tipo_Union: 0, Pai: int
+    -Linha: 1, Lexema: int, Tipo: declaration, Tipo_Union: 0, Pai: (null)
+      Linha: 1, Lexema: r, Tipo: declaration, Tipo_Union: 0, Pai: int
+    Linha: 2, Lexema: =, Tipo: expression, Tipo_Union: 6, Pai: main
+      Linha: 2, Lexema: a, Tipo: expression, Tipo_Union: 0, Pai: =
+      Linha: 2, Lexema: -, Tipo: expression, Tipo_Union: 0, Pai: =
+        Linha: 2, Lexema: 4, Tipo: expression, Tipo_Union: 1, Pai: -
+        Linha: 2, Lexema: 2, Tipo: expression, Tipo_Union: 1, Pai: -
+-Linha: 5, Lexema: void, Tipo: declaration, Tipo_Union: 1, Pai: (null)
+  Linha: 5, Lexema: adicionar, Tipo: declaration, Tipo_Union: 1, Pai: void
+    Linha: 6, Lexema: return, Tipo: statement, Tipo_Union: 2, Pai: adicionar
+      Linha: 6, Lexema: 5, Tipo: expression, Tipo_Union: 1, Pai: return

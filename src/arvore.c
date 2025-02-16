@@ -118,7 +118,12 @@ void print_node(FILE *file, No *node){
             kind_union = 42;
             break;
     }
-    fprintf(file, "Linha: %d, Lexema: %s, Tipo: %s, Tipo_Union: %d\n", node->linha, node->lexmema, kind_node, kind_union);
+    fprintf(file, "Linha: %d, Lexema: %s, Tipo: %s, Tipo_Union: %d", node->linha, node->lexmema, kind_node, kind_union);
+    if (node->pai != NULL){
+        fprintf(file, ", Pai: %s\n", node->pai->lexmema);
+    } else {
+        fprintf(file, ", Pai: (null)\n");
+    }
 }
 
 void print_tree(FILE *file, No *tree, int depth, int is_irmao){
