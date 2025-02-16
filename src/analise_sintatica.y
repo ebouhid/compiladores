@@ -108,14 +108,22 @@ tipo_especificador:
 fun_declaracao:
       tipo_especificador f_id T_LPAREN params T_RPAREN composto_decl {
         $$ = $1;
+        $$->kind_node = declaration_k;
         $$->kind_union.decl = (DeclarationKind)fun_k;
+        $2->kind_node = declaration_k;
+        $2->kind_union.decl = (DeclarationKind)fun_k;
+        fprintf(stderr, "Jarbas: %s | Node kind = %d | Union kind = %d\n", $2->lexmema, $2->kind_node, $2->kind_union.decl);
         add_filho($2, $4);
         add_filho($$, $2);
         add_filho($2, $6);
       }
     | tipo_especificador f_id T_LPAREN T_RPAREN composto_decl{
         $$ = $1;
+        $$->kind_node = declaration_k;
         $$->kind_union.decl = (DeclarationKind)fun_k;
+        $2->kind_node = declaration_k;
+        $2->kind_union.decl = (DeclarationKind)fun_k;
+        fprintf(stderr, "Jarbas: %s | Node kind = %d | Union kind = %d\n", $2->lexmema, $2->kind_node, $2->kind_union.decl);
         add_filho($$, $2);
         add_filho($2, $5);
       }

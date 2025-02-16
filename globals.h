@@ -1,5 +1,5 @@
 #define UNKNOWN_TYPE -1
-#define TABLE_SIZE 100
+#define TABLE_SIZE 512
 #include <stdio.h>
 
 // Árvore de sintaxe abstrata
@@ -9,12 +9,13 @@
 typedef enum {statement_k, expression_k, declaration_k} NodeKind;
 typedef enum {if_k, while_k, return_k, break_k, continue_k, expression_statement_k} StatementKind;
 typedef enum {op_k, constant_k, id_k, type_k, arr_k, ativ_k, assign_k} ExpressionKind;
-typedef enum {var_k, fun_k} DeclarationKind;
+typedef enum {var_k, fun_k, unknown_k} DeclarationKind;
 
-typedef struct no {
+typedef struct no
+{
     int linha;
     char lexmema[MAXLEXEME];
-    int max_index; /* -1 para variáveis normais, a partir de 0 para vetor */
+    int max_index;
     NodeKind kind_node;
     union {
         StatementKind stmt;
@@ -24,6 +25,7 @@ typedef struct no {
     struct no *pai;
     struct no *filho[NUMMAXFILHOS];
     struct no *irmao;
+    struct no *prev_irmao;
 } No; // Nó da árvore de sintaxe abstrata
 
 No * create_node(int linha, const char *lexmema, NodeKind kind, int kind_union);
@@ -39,6 +41,7 @@ void print_tree(FILE *file, No *tree, int depth, int is_irmao);
 // Struct dos simbolos
 typedef struct Symbol {
     unsigned int hash_key;
+    int linha;
     char *name;
     DeclarationKind id_type;
     char *type;
@@ -61,6 +64,6 @@ HashTable* create_table();
 unsigned int hash(char *scope, char *name);
 void iterate_tree(No* root, HashTable* symbol_table);
 void add_to_hash_table(Symbol* symbol, HashTable* symbol_table);
-Symbol* create_symbol(char* name, DeclarationKind id_type, char* type, char* scope);
+Symbol* create_symbol(char* name, int linha, DeclarationKind id_type, char* type, char* scope);
 char* get_scope(No* root);
 void print_symbol_table(FILE *file, HashTable* symbol_table);

@@ -34,7 +34,11 @@ void iterate_tree(No* root, HashTable* symbol_table) {
     
     if (strcmp(root->lexmema, "int") == 0 || strcmp(root->lexmema, "void") == 0) {
         Symbol* new_symbol;
-        new_symbol = create_symbol(root->filho[0]->lexmema, root->kind_union.decl, root->lexmema, get_scope(root));
+        if (root->filho[0] != NULL){
+            new_symbol = create_symbol(root->filho[0]->lexmema, root->linha, root->kind_union.decl, root->lexmema, get_scope(root));
+        } else {
+            new_symbol = create_symbol(root->lexmema, root->linha, root->kind_union.decl, root->lexmema, get_scope(root));
+        }
         add_to_hash_table(new_symbol, symbol_table);
     }
 
@@ -55,9 +59,10 @@ void add_to_hash_table(Symbol* new_symbol, HashTable* symbol_table) {
 }
 
 
-Symbol* create_symbol(char* name, DeclarationKind id_type, char* type, char* scope) {
+Symbol* create_symbol(char* name, int linha, DeclarationKind id_type, char* type, char* scope) {
     Symbol* new_symbol = malloc(sizeof(Symbol));
     new_symbol->hash_key = hash(scope, name);
+    new_symbol->linha = linha;
     new_symbol->name = name;
     new_symbol->id_type = id_type;
     new_symbol->type = type;
@@ -73,17 +78,24 @@ char* get_scope(No* node) {
         fprintf(stderr, "Memory allocation error in get_scope\n");
         exit(1);
     }
-    if (node->pai == NULL) {
+    
+    No *first_brother = node;
+    while (first_brother->prev_irmao != NULL) {
+        first_brother = first_brother->prev_irmao;
+    }
+    
+    if (first_brother->pai == NULL) {
         strncpy(ret, current_scope, MAXLEXEME);
         return ret;
-    } else if (node->kind_union.decl != fun_k) {
+    } else if (first_brother->kind_union.decl != fun_k) {
         fprintf(stderr, "Scopeeeeeee: %s | node->kind_union.decl = %d\n", node->lexmema, node->kind_union.decl);
-        char* parent_scope = get_scope(node->pai);
+        char* parent_scope = get_scope(first_brother->pai);
         strncpy(ret, parent_scope, MAXLEXEME);
         free(parent_scope);
         return ret;
     } else {
-        strncpy(ret, node->filho[0]->lexmema, MAXLEXEME);
+        // fprintf(stderr, "Scopeeeeeee: %s | node->kind_union.decl = %d\n", node->lexmema, node->kind_union.decl);
+        strncpy(ret, node->lexmema, MAXLEXEME);
         return ret;
     }
 }
@@ -92,7 +104,7 @@ void print_symbol_table(FILE* file, HashTable* symbol_table) {
     for (int i = 0; i < TABLE_SIZE; i++) {
         Symbol* current = symbol_table->table[i];
         while (current != NULL) {
-            fprintf(file, "Hash: %u Name: %s, ID Type: %d, Type: %s, Scope: %s\n", current->hash_key, current->name, current->id_type, current->type, current->scope);
+            fprintf(file, "Hash: %u Linha: %d, Name: %s, ID Type: %d, Type: %s, Scope: %s\n", current->hash_key, current->linha, current->name, current->id_type, current->type, current->scope);
             current = current->next;
         }
     }

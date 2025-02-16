@@ -13,7 +13,7 @@ typedef struct no
 {
     int linha;
     char lexmema[MAXLEXEME];
-    int max_index; /* -1 para variáveis normais, a partir de 0 para vetor */
+    int max_index;
     NodeKind kind_node;
     union {
         StatementKind stmt;
@@ -23,6 +23,7 @@ typedef struct no
     struct no *pai;
     struct no *filho[NUMMAXFILHOS];
     struct no *irmao;
+    struct no *prev_irmao;
 } No;
 
 No * create_node(int linha, const char *lexmema, NodeKind kind, int kind_union){
@@ -32,10 +33,11 @@ No * create_node(int linha, const char *lexmema, NodeKind kind, int kind_union){
     node->max_index = -1;
     node->kind_node = kind;
     node->pai = NULL;
-    node->filho[0] = NULL;
-    node->filho[1] = NULL;
-    node->filho[2] = NULL;
     node->irmao = NULL;
+    node->prev_irmao = NULL;
+    for (int i = 0; i < NUMMAXFILHOS; i++) {
+        node->filho[i] = NULL;
+    }
 
     switch (kind){
         case statement_k:
@@ -52,26 +54,16 @@ No * create_node(int linha, const char *lexmema, NodeKind kind, int kind_union){
     return node;
 }
 
-No * create_tree(int linha, const char *lexmema, NodeKind kind, int kind_union){
-    No *tree = create_node(linha, lexmema, kind, kind_union);
-    return tree;
-}
-
 No * add_filho(No *pai, No *filho){
-    int i = 0;
-
-    while (pai->filho[i] != NULL && i < NUMMAXFILHOS){
-        i++;
+    for (int i = 0; i < NUMMAXFILHOS; i++){
+        if (pai->filho[i] == NULL) {
+            pai->filho[i] = filho;
+            filho->pai = pai;
+            return pai;
+        }
     }
-
-    if (i < NUMMAXFILHOS) {
-        pai->filho[i] = filho;
-        filho->pai = pai;
-    } else {
-        printf("Erro: Número máximo de filhos excedido.\n");
-        free(filho);
-    }
-    
+    printf("Erro: Número máximo de filhos excedido.\n");
+    free(filho);
     return pai;
 }
 
@@ -79,18 +71,17 @@ No * add_irmao(No *irmao, No *novo){
     while (irmao->irmao != NULL){
         irmao = irmao->irmao;
     }
-
-    novo->pai = irmao->pai;
     irmao->irmao = novo;
-    
+    novo->prev_irmao = irmao;
+    novo->pai = irmao->pai;
     return novo;
 }
 
 void free_tree(No *tree){
     if (tree == NULL){return;}
-    free_tree(tree->filho[0]);
-    free_tree(tree->filho[1]);
-    free_tree(tree->filho[2]);
+    for (int i = 0; i < NUMMAXFILHOS; i++) {
+        free_tree(tree->filho[i]);
+    }
     free_tree(tree->irmao);
     free(tree);
 }
@@ -115,15 +106,17 @@ void print_node(FILE *file, No *node){
             break;
         default:
             kind_node = "unknown";
-            kind_union = 42;
+            kind_union = -1;
             break;
     }
     fprintf(file, "Linha: %d, Lexema: %s, Tipo: %s, Tipo_Union: %d", node->linha, node->lexmema, kind_node, kind_union);
     if (node->pai != NULL){
-        fprintf(file, ", Pai: %s\n", node->pai->lexmema);
-    } else {
-        fprintf(file, ", Pai: (null)\n");
+        fprintf(file, ", Pai: %s", node->pai->lexmema);
     }
+    if (node->prev_irmao != NULL){
+        fprintf(file, ", Irmao Anterior: %s", node->prev_irmao->lexmema);
+    }
+    fprintf(file, "\n");
 }
 
 void print_tree(FILE *file, No *tree, int depth, int is_irmao){
@@ -135,35 +128,8 @@ void print_tree(FILE *file, No *tree, int depth, int is_irmao){
         fprintf(file, "-");
     }
     print_node(file, tree);
-    print_tree(file, tree->filho[0], depth + 1, 0);
-    print_tree(file, tree->filho[1], depth + 1, 0);
-    print_tree(file, tree->filho[2], depth + 1, 0);
+    for (int i = 0; i < NUMMAXFILHOS; i++) {
+        print_tree(file, tree->filho[i], depth + 1, 0);
+    }
     print_tree(file, tree->irmao, depth, 1);
 }
-
-
-// int main(){
-//     No *tree = create_tree(1, "if", statement_k, if_k);
-//     No *stmt = create_node(1, "while", statement_k, while_k);
-//     No *expr = create_node(1, "op", expression_k, op_k);
-//     No *decl = create_node(1, "var", declaration_k, var_k);
-//     No *stmt2 = create_node(1, "return", statement_k, return_k);
-//     No *stmt3 = create_node(1, "break", statement_k, break_k);
-
-//     add_filho(tree, stmt);
-//     add_filho(tree, expr);
-//     add_filho(tree, decl);
-//     add_irmao(expr, stmt2);
-//     add_filho(expr, stmt3);
-
-//     FILE *fp = fopen("tree.txt", "w");
-//     if(fp == NULL){
-//         perror("Erro ao abrir o arquivo para escrita");
-//         exit(1);
-//     }
-//     print_tree(fp, tree, 0, 0);
-//     fclose(fp);
-
-//     free_tree(tree);
-//     return 0;
-// }
