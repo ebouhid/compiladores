@@ -23,6 +23,8 @@ int main(int argc, char **argv) {
     
         semantic_analysis(raizArvore, hashTable);
         check_main_function();
+    } else {
+        exit(1);
     }
 
     return 0;

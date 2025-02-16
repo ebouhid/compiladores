@@ -68,4 +68,9 @@ char tokenWord[MAXLEXEME];
 [ \t\r]+    ;  // Ignora espaços e tabulações
 [\n]        { yylinenum++; }  // Conta cada nova linha
 
+. {
+    fprintf(stderr, "Erro lexico: Caractere '%s' invalido na linha %d\n", yytext, yylinenum);
+    exit(1);
+  }
+
 %%
