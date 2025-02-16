@@ -29,7 +29,6 @@ void semantic_analysis(No* root, HashTable* symbol_table) {
     
     // Rule 5: Call of undeclared function
     if (root->kind_union.expr == ativ_k) {
-        printf("Checking function call: %s | KindNode: %d | KindUnion: %d\n", root->lexmema, root->kind_node, root->kind_union);
         Symbol* func = find_symbol(symbol_table, root->lexmema, "GLOBAL");
         if (!func && strcmp(root->lexmema, "input") != 0 && strcmp(root->lexmema, "output") != 0) {
             fprintf(stderr, "Semantic Error: Function '%s' called without declaration at line %d.\n", root->lexmema, root->linha);
