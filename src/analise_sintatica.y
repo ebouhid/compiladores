@@ -347,27 +347,6 @@ args_lista:
 
 %%
 
-int main() {
-    FILE *arvore = fopen("arvore.txt", "w");
-    FILE *tabsimb = fopen("tabsimb.txt", "w");
-    yydebug = 0;
-    int token = 1;
-    int sintatica = yyparse();
-    if (sintatica == 0) {
-        print_tree(arvore, raizArvore, 0, 0);
-    
-        HashTable *hashTable = create_table(HASH_SIZE);
-        iterate_tree(raizArvore, hashTable);
-        print_symbol_table(tabsimb, hashTable);
-
-        semantic_analysis(raizArvore, hashTable);
-        check_main_function();
-
-    } 
-   
-    return 0;
-}
-
 int yyerror(char *msg) {
     fprintf(stderr, "Erro de sintaxe na linha %d: Token inesperado: '%s'\n", yylinenum, yytext);
 }
