@@ -1,5 +1,4 @@
 #define UNKNOWN_TYPE -1
-#define HASH_SIZE 128
 #define TABLE_SIZE 100
 #include <stdio.h>
 
@@ -63,5 +62,5 @@ unsigned int hash(char *scope, char *name);
 void iterate_tree(No* root, HashTable* symbol_table);
 void add_to_hash_table(Symbol* symbol, HashTable* symbol_table);
 Symbol* create_symbol(char* name, DeclarationKind id_type, char* type, char* scope);
-void get_scope(No* root, char* scope);
+char* get_scope(No* root);
 void print_symbol_table(FILE *file, HashTable* symbol_table);

@@ -98,22 +98,27 @@ void free_tree(No *tree){
 void print_node(FILE *file, No *node){
     if (node == NULL){return;}
     char *kind_node;
+    int kind_union;
 
     switch (node->kind_node){
         case statement_k:
             kind_node = "statement";
+            kind_union = node->kind_union.stmt;
             break;
         case expression_k:
             kind_node = "expression";
+            kind_union = node->kind_union.expr;
             break;
         case declaration_k:
             kind_node = "declaration";
+            kind_union = node->kind_union.decl;
             break;
         default:
             kind_node = "unknown";
+            kind_union = 42;
             break;
     }
-    fprintf(file, "Linha: %d, Lexema: %s, Tipo: %s\n", node->linha, node->lexmema, kind_node);
+    fprintf(file, "Linha: %d, Lexema: %s, Tipo: %s, Tipo_Union: %d\n", node->linha, node->lexmema, kind_node, kind_union);
 }
 
 void print_tree(FILE *file, No *tree, int depth, int is_irmao){
