@@ -33,6 +33,7 @@ void iterate_tree(No* root, HashTable* symbol_table) {
     }
     
     if (strcmp(root->lexmema, "int") == 0 || strcmp(root->lexmema, "void") == 0) {
+
         Symbol* new_symbol;
         if (root->filho[0] != NULL){
             new_symbol = create_symbol(root->filho[0]->lexmema, root->linha, root->kind_union.decl, root->lexmema, get_scope(root));

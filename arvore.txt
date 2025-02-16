@@ -1,46 +1,139 @@
-Linha: 1, Lexema: void, Tipo: declaration, Tipo_Union: 1
-  Linha: 1, Lexema: ribamar, Tipo: declaration, Tipo_Union: 1, Pai: void
-    Linha: 1, Lexema: int, Tipo: declaration, Tipo_Union: 0, Pai: ribamar
-      Linha: 1, Lexema: a, Tipo: declaration, Tipo_Union: 0, Pai: int
-    -Linha: 1, Lexema: int, Tipo: declaration, Tipo_Union: 0, Irmao Anterior: int
-      Linha: 1, Lexema: b, Tipo: declaration, Tipo_Union: 0, Pai: int
-    -Linha: 1, Lexema: int, Tipo: declaration, Tipo_Union: 0, Irmao Anterior: int
-      Linha: 1, Lexema: c, Tipo: declaration, Tipo_Union: 0, Pai: int
-    Linha: 2, Lexema: return, Tipo: statement, Tipo_Union: 2, Pai: ribamar
--Linha: 5, Lexema: int, Tipo: declaration, Tipo_Union: 1, Irmao Anterior: void
-  Linha: 5, Lexema: main, Tipo: declaration, Tipo_Union: 1, Pai: int
-    Linha: 5, Lexema: int, Tipo: declaration, Tipo_Union: 0, Pai: main
-      Linha: 5, Lexema: a, Tipo: declaration, Tipo_Union: 0, Pai: int
-    -Linha: 5, Lexema: int, Tipo: declaration, Tipo_Union: 0, Irmao Anterior: int
-      Linha: 5, Lexema: r, Tipo: declaration, Tipo_Union: 0, Pai: int
-    -Linha: 5, Lexema: int, Tipo: declaration, Tipo_Union: 0, Irmao Anterior: int
-      Linha: 5, Lexema: beija_flor, Tipo: declaration, Tipo_Union: 0, Pai: int
-    Linha: 6, Lexema: int, Tipo: declaration, Tipo_Union: 0, Pai: main
-      Linha: 6, Lexema: jarbas, Tipo: declaration, Tipo_Union: 0, Pai: int
-    -Linha: 7, Lexema: =, Tipo: expression, Tipo_Union: 6, Irmao Anterior: int
-      Linha: 7, Lexema: jarbas, Tipo: expression, Tipo_Union: 0, Pai: =
-      Linha: 7, Lexema: 4, Tipo: expression, Tipo_Union: 1, Pai: =
-    -Linha: 8, Lexema: =, Tipo: expression, Tipo_Union: 6, Irmao Anterior: =
-      Linha: 8, Lexema: a, Tipo: expression, Tipo_Union: 0, Pai: =
-      Linha: 8, Lexema: -, Tipo: expression, Tipo_Union: 0, Pai: =
-        Linha: 8, Lexema: 4, Tipo: expression, Tipo_Union: 1, Pai: -
-        Linha: 8, Lexema: 2, Tipo: expression, Tipo_Union: 1, Pai: -
-    -Linha: 9, Lexema: =, Tipo: expression, Tipo_Union: 6, Irmao Anterior: =
-      Linha: 9, Lexema: r, Tipo: expression, Tipo_Union: 0, Pai: =
-      Linha: 9, Lexema: rogerio, Tipo: expression, Tipo_Union: 5, Pai: =
-        Linha: 9, Lexema: 1, Tipo: expression, Tipo_Union: 1, Pai: rogerio
-        -Linha: 9, Lexema: 2, Tipo: expression, Tipo_Union: 1, Irmao Anterior: 1
-        -Linha: 9, Lexema: 3, Tipo: expression, Tipo_Union: 1, Irmao Anterior: 2
--Linha: 12, Lexema: int, Tipo: declaration, Tipo_Union: 1, Irmao Anterior: int
-  Linha: 12, Lexema: rogerio, Tipo: declaration, Tipo_Union: 1, Pai: int
-    Linha: 12, Lexema: int, Tipo: declaration, Tipo_Union: 0, Pai: rogerio
-      Linha: 12, Lexema: x, Tipo: declaration, Tipo_Union: 0, Pai: int
-    -Linha: 12, Lexema: int, Tipo: declaration, Tipo_Union: 0, Irmao Anterior: int
-      Linha: 12, Lexema: gaara, Tipo: declaration, Tipo_Union: 0, Pai: int
-    -Linha: 12, Lexema: int, Tipo: declaration, Tipo_Union: 0, Irmao Anterior: int
-      Linha: 12, Lexema: sakura, Tipo: declaration, Tipo_Union: 0, Pai: int
-    Linha: 13, Lexema: return, Tipo: statement, Tipo_Union: 2, Pai: rogerio
-      Linha: 13, Lexema: 5, Tipo: expression, Tipo_Union: 1, Pai: return
--Linha: 16, Lexema: void, Tipo: declaration, Tipo_Union: 1, Irmao Anterior: int
-  Linha: 16, Lexema: renato, Tipo: declaration, Tipo_Union: 1, Pai: void
-    Linha: 17, Lexema: return, Tipo: statement, Tipo_Union: 2, Pai: renato
+Linha: 5, Lexema: int, Tipo: declaration, Tipo_Union: 4
+  Linha: 5, Lexema: vet, Tipo: declaration, Tipo_Union: 4, Pai: int
+  Linha: 5, Lexema: 10, Tipo: declaration, Tipo_Union: 1, Pai: int
+-Linha: 7, Lexema: int, Tipo: declaration, Tipo_Union: 1, Irmao Anterior: int
+  Linha: 7, Lexema: minloc, Tipo: declaration, Tipo_Union: 1, Pai: int
+    Linha: 7, Lexema: int, Tipo: declaration, Tipo_Union: 0, Pai: minloc
+      Linha: 7, Lexema: a, Tipo: declaration, Tipo_Union: 4, Pai: int
+    -Linha: 7, Lexema: int, Tipo: declaration, Tipo_Union: 0, Irmao Anterior: int
+      Linha: 7, Lexema: low, Tipo: declaration, Tipo_Union: 0, Pai: int
+    -Linha: 7, Lexema: int, Tipo: declaration, Tipo_Union: 0, Irmao Anterior: int
+      Linha: 7, Lexema: high, Tipo: declaration, Tipo_Union: 0, Pai: int
+    Linha: 9, Lexema: int, Tipo: declaration, Tipo_Union: 0, Pai: minloc
+      Linha: 9, Lexema: i, Tipo: declaration, Tipo_Union: 0, Pai: int
+    -Linha: 10, Lexema: int, Tipo: declaration, Tipo_Union: 0, Irmao Anterior: int
+      Linha: 10, Lexema: x, Tipo: declaration, Tipo_Union: 0, Pai: int
+    -Linha: 11, Lexema: int, Tipo: declaration, Tipo_Union: 0, Irmao Anterior: int
+      Linha: 11, Lexema: k, Tipo: declaration, Tipo_Union: 0, Pai: int
+    -Linha: 12, Lexema: =, Tipo: expression, Tipo_Union: 6, Irmao Anterior: int
+      Linha: 12, Lexema: k, Tipo: expression, Tipo_Union: 0, Pai: =
+      Linha: 12, Lexema: low, Tipo: expression, Tipo_Union: 0, Pai: =
+    -Linha: 13, Lexema: =, Tipo: expression, Tipo_Union: 6, Irmao Anterior: =
+      Linha: 13, Lexema: x, Tipo: expression, Tipo_Union: 0, Pai: =
+      Linha: 13, Lexema: a, Tipo: expression, Tipo_Union: 4, Pai: =
+        Linha: 13, Lexema: 0, Tipo: expression, Tipo_Union: 0, Pai: a
+    -Linha: 14, Lexema: =, Tipo: expression, Tipo_Union: 6, Irmao Anterior: =
+      Linha: 14, Lexema: i, Tipo: expression, Tipo_Union: 0, Pai: =
+      Linha: 14, Lexema: +, Tipo: expression, Tipo_Union: 0, Pai: =
+        Linha: 14, Lexema: low, Tipo: expression, Tipo_Union: 0, Pai: +
+        Linha: 14, Lexema: 1, Tipo: expression, Tipo_Union: 1, Pai: +
+    -Linha: 21, Lexema: while, Tipo: statement, Tipo_Union: 1, Irmao Anterior: =
+      Linha: 15, Lexema: <, Tipo: expression, Tipo_Union: 0, Pai: while
+        Linha: 15, Lexema: i, Tipo: expression, Tipo_Union: 0, Pai: <
+        Linha: 15, Lexema: high, Tipo: expression, Tipo_Union: 0, Pai: <
+      Linha: 20, Lexema: if, Tipo: statement, Tipo_Union: 0, Pai: while
+        Linha: 16, Lexema: <, Tipo: expression, Tipo_Union: 0, Pai: if
+          Linha: 16, Lexema: a, Tipo: expression, Tipo_Union: 4, Pai: <
+            Linha: 16, Lexema: low, Tipo: expression, Tipo_Union: 0, Pai: a
+          Linha: 16, Lexema: x, Tipo: expression, Tipo_Union: 0, Pai: <
+        Linha: 17, Lexema: =, Tipo: expression, Tipo_Union: 6, Pai: if
+          Linha: 17, Lexema: x, Tipo: expression, Tipo_Union: 0, Pai: =
+          Linha: 17, Lexema: a, Tipo: expression, Tipo_Union: 4, Pai: =
+            Linha: 17, Lexema: i, Tipo: expression, Tipo_Union: 0, Pai: a
+        -Linha: 18, Lexema: =, Tipo: expression, Tipo_Union: 6, Irmao Anterior: =
+          Linha: 18, Lexema: k, Tipo: expression, Tipo_Union: 0, Pai: =
+          Linha: 18, Lexema: i, Tipo: expression, Tipo_Union: 0, Pai: =
+      -Linha: 20, Lexema: =, Tipo: expression, Tipo_Union: 6, Irmao Anterior: if
+        Linha: 20, Lexema: i, Tipo: expression, Tipo_Union: 0, Pai: =
+        Linha: 20, Lexema: +, Tipo: expression, Tipo_Union: 0, Pai: =
+          Linha: 20, Lexema: i, Tipo: expression, Tipo_Union: 0, Pai: +
+          Linha: 20, Lexema: 1, Tipo: expression, Tipo_Union: 1, Pai: +
+    -Linha: 22, Lexema: return, Tipo: statement, Tipo_Union: 2, Irmao Anterior: while
+      Linha: 22, Lexema: k, Tipo: expression, Tipo_Union: 0, Pai: return
+-Linha: 25, Lexema: void, Tipo: declaration, Tipo_Union: 1, Irmao Anterior: int
+  Linha: 25, Lexema: sort, Tipo: declaration, Tipo_Union: 1, Pai: void
+    Linha: 25, Lexema: int, Tipo: declaration, Tipo_Union: 0, Pai: sort
+      Linha: 25, Lexema: a, Tipo: declaration, Tipo_Union: 4, Pai: int
+    -Linha: 25, Lexema: int, Tipo: declaration, Tipo_Union: 0, Irmao Anterior: int
+      Linha: 25, Lexema: low, Tipo: declaration, Tipo_Union: 0, Pai: int
+    -Linha: 25, Lexema: int, Tipo: declaration, Tipo_Union: 0, Irmao Anterior: int
+      Linha: 25, Lexema: high, Tipo: declaration, Tipo_Union: 0, Pai: int
+    Linha: 26, Lexema: int, Tipo: declaration, Tipo_Union: 0, Pai: sort
+      Linha: 26, Lexema: i, Tipo: declaration, Tipo_Union: 0, Pai: int
+    -Linha: 26, Lexema: int, Tipo: declaration, Tipo_Union: 0, Irmao Anterior: int
+      Linha: 26, Lexema: k, Tipo: declaration, Tipo_Union: 0, Pai: int
+    -Linha: 27, Lexema: =, Tipo: expression, Tipo_Union: 6, Irmao Anterior: int
+      Linha: 27, Lexema: i, Tipo: expression, Tipo_Union: 0, Pai: =
+      Linha: 27, Lexema: low, Tipo: expression, Tipo_Union: 0, Pai: =
+    -Linha: 35, Lexema: while, Tipo: statement, Tipo_Union: 1, Irmao Anterior: =
+      Linha: 28, Lexema: <, Tipo: expression, Tipo_Union: 0, Pai: while
+        Linha: 28, Lexema: i, Tipo: expression, Tipo_Union: 0, Pai: <
+        Linha: 28, Lexema: -, Tipo: expression, Tipo_Union: 0, Pai: <
+          Linha: 28, Lexema: high, Tipo: expression, Tipo_Union: 0, Pai: -
+          Linha: 28, Lexema: 1, Tipo: expression, Tipo_Union: 1, Pai: -
+      Linha: 29, Lexema: int, Tipo: declaration, Tipo_Union: 0, Pai: while
+        Linha: 29, Lexema: t, Tipo: declaration, Tipo_Union: 0, Pai: int
+      -Linha: 30, Lexema: =, Tipo: expression, Tipo_Union: 6, Irmao Anterior: int
+        Linha: 30, Lexema: k, Tipo: expression, Tipo_Union: 0, Pai: =
+        Linha: 30, Lexema: high, Tipo: expression, Tipo_Union: 5, Pai: =
+          Linha: 30, Lexema: a, Tipo: expression, Tipo_Union: 0, Pai: high
+          -Linha: 30, Lexema: i, Tipo: expression, Tipo_Union: 0, Irmao Anterior: a
+          -Linha: 30, Lexema: high, Tipo: expression, Tipo_Union: 0, Irmao Anterior: i
+      -Linha: 31, Lexema: =, Tipo: expression, Tipo_Union: 6, Irmao Anterior: =
+        Linha: 31, Lexema: t, Tipo: expression, Tipo_Union: 0, Pai: =
+        Linha: 31, Lexema: a, Tipo: expression, Tipo_Union: 4, Pai: =
+          Linha: 31, Lexema: k, Tipo: expression, Tipo_Union: 0, Pai: a
+      -Linha: 32, Lexema: =, Tipo: expression, Tipo_Union: 6, Irmao Anterior: =
+        Linha: 32, Lexema: a, Tipo: expression, Tipo_Union: 4, Pai: =
+          Linha: 32, Lexema: k, Tipo: expression, Tipo_Union: 0, Pai: a
+        Linha: 32, Lexema: a, Tipo: expression, Tipo_Union: 4, Pai: =
+          Linha: 32, Lexema: i, Tipo: expression, Tipo_Union: 0, Pai: a
+      -Linha: 33, Lexema: =, Tipo: expression, Tipo_Union: 6, Irmao Anterior: =
+        Linha: 33, Lexema: a, Tipo: expression, Tipo_Union: 4, Pai: =
+          Linha: 33, Lexema: i, Tipo: expression, Tipo_Union: 0, Pai: a
+        Linha: 33, Lexema: t, Tipo: expression, Tipo_Union: 0, Pai: =
+      -Linha: 34, Lexema: =, Tipo: expression, Tipo_Union: 6, Irmao Anterior: =
+        Linha: 34, Lexema: i, Tipo: expression, Tipo_Union: 0, Pai: =
+        Linha: 34, Lexema: +, Tipo: expression, Tipo_Union: 0, Pai: =
+          Linha: 34, Lexema: i, Tipo: expression, Tipo_Union: 0, Pai: +
+          Linha: 34, Lexema: 1, Tipo: expression, Tipo_Union: 1, Pai: +
+-Linha: 38, Lexema: void, Tipo: declaration, Tipo_Union: 1, Irmao Anterior: void
+  Linha: 38, Lexema: main, Tipo: declaration, Tipo_Union: 1, Pai: void
+    Linha: 38, Lexema: void, Tipo: expression, Tipo_Union: 3, Pai: main
+    Linha: 40, Lexema: int, Tipo: declaration, Tipo_Union: 0, Pai: main
+      Linha: 40, Lexema: i, Tipo: declaration, Tipo_Union: 0, Pai: int
+    -Linha: 41, Lexema: =, Tipo: expression, Tipo_Union: 6, Irmao Anterior: int
+      Linha: 41, Lexema: i, Tipo: expression, Tipo_Union: 0, Pai: =
+      Linha: 41, Lexema: 0, Tipo: expression, Tipo_Union: 1, Pai: =
+    -Linha: 45, Lexema: while, Tipo: statement, Tipo_Union: 1, Irmao Anterior: =
+      Linha: 42, Lexema: <, Tipo: expression, Tipo_Union: 0, Pai: while
+        Linha: 42, Lexema: i, Tipo: expression, Tipo_Union: 0, Pai: <
+        Linha: 42, Lexema: 10, Tipo: expression, Tipo_Union: 1, Pai: <
+      Linha: 43, Lexema: =, Tipo: expression, Tipo_Union: 6, Pai: while
+        Linha: 43, Lexema: vet, Tipo: expression, Tipo_Union: 4, Pai: =
+          Linha: 43, Lexema: i, Tipo: expression, Tipo_Union: 0, Pai: vet
+        Linha: 43, Lexema: input, Tipo: expression, Tipo_Union: 5, Pai: =
+      -Linha: 44, Lexema: =, Tipo: expression, Tipo_Union: 6, Irmao Anterior: =
+        Linha: 44, Lexema: i, Tipo: expression, Tipo_Union: 0, Pai: =
+        Linha: 44, Lexema: +, Tipo: expression, Tipo_Union: 0, Pai: =
+          Linha: 44, Lexema: i, Tipo: expression, Tipo_Union: 0, Pai: +
+          Linha: 44, Lexema: 1, Tipo: expression, Tipo_Union: 1, Pai: +
+    -Linha: 46, Lexema: vet, Tipo: expression, Tipo_Union: 5, Irmao Anterior: while
+      Linha: 46, Lexema: vet, Tipo: expression, Tipo_Union: 0, Pai: vet
+      -Linha: 46, Lexema: 0, Tipo: expression, Tipo_Union: 1, Irmao Anterior: vet
+      -Linha: 46, Lexema: 10, Tipo: expression, Tipo_Union: 1, Irmao Anterior: 0
+    -Linha: 47, Lexema: =, Tipo: expression, Tipo_Union: 6, Irmao Anterior: vet
+      Linha: 47, Lexema: i, Tipo: expression, Tipo_Union: 0, Pai: =
+      Linha: 47, Lexema: 0, Tipo: expression, Tipo_Union: 1, Pai: =
+    -Linha: 51, Lexema: while, Tipo: statement, Tipo_Union: 1, Irmao Anterior: =
+      Linha: 48, Lexema: <, Tipo: expression, Tipo_Union: 0, Pai: while
+        Linha: 48, Lexema: i, Tipo: expression, Tipo_Union: 0, Pai: <
+        Linha: 48, Lexema: 10, Tipo: expression, Tipo_Union: 1, Pai: <
+      Linha: 49, Lexema: i, Tipo: expression, Tipo_Union: 5, Pai: while
+        Linha: 49, Lexema: vet, Tipo: expression, Tipo_Union: 4, Pai: i
+          Linha: 49, Lexema: i, Tipo: expression, Tipo_Union: 0, Pai: vet
+      -Linha: 50, Lexema: =, Tipo: expression, Tipo_Union: 6, Irmao Anterior: i
+        Linha: 50, Lexema: i, Tipo: expression, Tipo_Union: 0, Pai: =
+        Linha: 50, Lexema: +, Tipo: expression, Tipo_Union: 0, Pai: =
+          Linha: 50, Lexema: i, Tipo: expression, Tipo_Union: 0, Pai: +
+          Linha: 50, Lexema: 1, Tipo: expression, Tipo_Union: 1, Pai: +

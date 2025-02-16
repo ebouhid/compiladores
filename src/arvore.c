@@ -73,7 +73,6 @@ No * add_irmao(No *irmao, No *novo){
     }
     irmao->irmao = novo;
     novo->prev_irmao = irmao;
-    novo->pai = irmao->pai;
     return novo;
 }
 

@@ -11,7 +11,7 @@ void semantic_analysis(No* root, HashTable* symbol_table) {
     
     // Rule 3: Invalid type on declaration (void variable)
     if (strcmp(root->lexmema, "void") == 0 && root->filho[0] != NULL && root->kind_union.decl == var_k) {
-        fprintf(stderr, "Error: Variable '%s' declared with invalid type 'void' at line %d.\n", root->filho[0]->lexmema, root->linha);
+        fprintf(stderr, "Semantic Error: Variable '%s' declared with invalid type 'void' at line %d.\n", root->filho[0]->lexmema, root->linha);
     }
     
     // Rule 4 & 7: Multiple declarations (same variable/function name in scope)
@@ -23,15 +23,16 @@ void semantic_analysis(No* root, HashTable* symbol_table) {
         // }
         int count = count_symbol(root->filho[0]->lexmema, scope, symbol_table);
         if (count > 1) {
-            fprintf(stderr, "Error: Multiple declarations of '%s' at line %d.\n", root->filho[0]->lexmema, root->linha);
+            fprintf(stderr, "Semantic Error: Multiple declarations of '%s' at line %d.\n", root->filho[0]->lexmema, root->linha);
         }
     }
     
     // Rule 5: Call of undeclared function
     if (root->kind_union.expr == ativ_k) {
+        printf("Checking function call: %s\n", root->lexmema);
         Symbol* func = find_symbol(symbol_table, root->lexmema, "GLOBAL");
         if (!func) {
-            fprintf(stderr, "Error: Function '%s' called without declaration at line %d.\n", root->lexmema, root->linha);
+            fprintf(stderr, "Semantic Error: Function '%s' called without declaration at line %d.\n", root->lexmema, root->linha);
         }
     }
     
@@ -39,7 +40,7 @@ void semantic_analysis(No* root, HashTable* symbol_table) {
     if (root->kind_union.expr == assign_k) {
         Symbol* var = find_symbol(symbol_table, root->filho[0]->lexmema, scope);
         if (!var) {
-            fprintf(stderr, "Error: Variable '%s' assigned before declaration at line %d.\n", root->filho[0]->lexmema, root->linha);
+            fprintf(stderr, "Semantic Error: Variable '%s' assigned before declaration at line %d.\n", root->filho[0]->lexmema, root->linha);
         }
     }
     
@@ -48,7 +49,7 @@ void semantic_analysis(No* root, HashTable* symbol_table) {
     if (strcmp(root->lexmema, "=") == 0  && root->filho[1]->kind_union.expr == ativ_k) {
         Symbol* func = find_symbol(symbol_table, root->filho[1]->lexmema, "GLOBAL");
         if (func && strcmp(func->type, "void") == 0) {
-            fprintf(stderr, "Error: Cannot assign return value of void function '%s' at line %d.\n", root->filho[1]->lexmema, root->linha);
+            fprintf(stderr, "Semantic Error: Cannot assign return value of void function '%s' at line %d.\n", root->filho[1]->lexmema, root->linha);
         }
     }
     
@@ -67,6 +68,6 @@ void semantic_analysis(No* root, HashTable* symbol_table) {
 
 void check_main_function() {
     if (!main_declared) {
-        fprintf(stderr, "Error: No declaration of 'main' function.\n");
+        fprintf(stderr, "Semantic Error: No declaration of 'main' function.\n");
     }
 }

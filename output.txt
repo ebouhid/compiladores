@@ -1,3 +1,8 @@
-Sucesso na análise sintática
-Semantic analysis
-Checking main function...
+Semantic Error: Function 'high' called without declaration at line 30.
+Semantic Error: Variable 'vet' assigned before declaration at line 43.
+Semantic Error: Function 'input' called without declaration at line 43.
+Semantic Error: Function 'i' called without declaration at line 49.
+Checking function call: high
+Checking function call: input
+Checking function call: vet
+Checking function call: i
