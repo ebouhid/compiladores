@@ -9,8 +9,8 @@ extern int yylinenum;
 extern No *raizArvore;
 
 int main(int argc, char **argv) {
-    FILE *arvore = fopen("arvore.txt", "w");
-    FILE *tabsimb = fopen("tabsimb.txt", "w");
+    FILE *arvore = fopen("outputs/arvore.txt", "w");
+    FILE *tabsimb = fopen("outputs/tabsimb.txt", "w");
     // yydebug = 0;
     int token = 1;
     int sintatica = yyparse();
