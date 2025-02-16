@@ -66,6 +66,7 @@ No * add_filho(No *pai, No *filho){
 
     if (i < NUMMAXFILHOS) {
         pai->filho[i] = filho;
+        filho->pai = pai;
     } else {
         printf("Erro: Número máximo de filhos excedido.\n");
         free(filho);
@@ -79,6 +80,7 @@ No * add_irmao(No *irmao, No *novo){
         irmao = irmao->irmao;
     }
 
+    novo->pai = irmao->pai;
     irmao->irmao = novo;
     
     return novo;
