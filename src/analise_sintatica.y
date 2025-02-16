@@ -324,6 +324,8 @@ fator:
 ativacao:
       f_id T_LPAREN args T_RPAREN { 
         $$ = $1;
+        $$->kind_node = expression_k;
+        $$->kind_union.expr = (ExpressionKind)ativ_k;
         add_filho($$, $3);
         }
     | f_id T_LPAREN T_RPAREN { $$ = create_node(yylinenum, id_lexema, expression_k, ativ_k); }
