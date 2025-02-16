@@ -1,3 +1,0 @@
-Sucesso na análise sintática
-Semantic analysis
-Checking main function...
