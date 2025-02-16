@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include "globals.h"
 #include <string.h>
-#define HASH_SIZE 128
 
 #define YYSTYPE No*
 
@@ -344,31 +343,6 @@ args_lista:
 ;
 
 %%
-
-int main() {
-    FILE *arvore = fopen("arvore.txt", "w");
-    FILE *tabsimb = fopen("tabsimb.txt", "w");
-    yydebug = 0;
-    int token = 1;
-    int sintatica = yyparse();
-    if (sintatica == 0) {
-        fprintf(stderr, "Sucesso na análise sintática\n");
-    } else {
-        fprintf(stderr, "Erro na análise sintática\n");
-    }
-    print_tree(arvore, raizArvore, 0, 0);
-    
-    HashTable *hashTable = create_table(HASH_SIZE);
-    iterate_tree(raizArvore, hashTable);
-    print_symbol_table(tabsimb, hashTable);
-
-    fprintf(stderr, "Semantic analysis\n");
-    semantic_analysis(raizArvore, hashTable);
-    fprintf(stderr, "Checking main function...\n");
-    check_main_function();
-
-    return 0;
-}
 
 int yyerror(char *msg) {
     fprintf(stderr, "Erro de sintaxe na linha %d: %s. Token inesperado: '%s'\n", yylinenum, msg, yytext);
