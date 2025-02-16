@@ -40,7 +40,10 @@ void semantic_analysis(No* root, HashTable* symbol_table) {
     if (root->kind_union.expr == assign_k) {
         Symbol* var = find_symbol(symbol_table, root->filho[0]->lexmema, scope);
         if (!var) {
-            fprintf(stderr, "Semantic Error: Variable '%s' assigned before declaration at line %d.\n", root->filho[0]->lexmema, root->linha);
+            Symbol* varglobal = find_symbol(symbol_table, root->filho[0]->lexmema, "GLOBAL");
+            if (!varglobal){
+                fprintf(stderr, "Error: Variable '%s' assigned before declaration at line %d.\n", root->filho[0]->lexmema, root->linha);
+            }
         }
     }
     
