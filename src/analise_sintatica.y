@@ -322,11 +322,11 @@ fator:
 ;
 
 ativacao:
-      T_ID T_LPAREN args T_RPAREN { 
-        $$ = create_node(yylinenum, id_lexema, expression_k, ativ_k);
+      f_id T_LPAREN args T_RPAREN { 
+        $$ = $1;
         add_filho($$, $3);
         }
-    | T_ID T_LPAREN T_RPAREN { $$ = create_node(yylinenum, id_lexema, expression_k, ativ_k); }
+    | f_id T_LPAREN T_RPAREN { $$ = create_node(yylinenum, id_lexema, expression_k, ativ_k); }
 ;
 
 args:
