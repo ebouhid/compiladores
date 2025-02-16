@@ -58,6 +58,7 @@ typedef struct HashTable {
 extern char *id_lexema;
 extern HashTable *symbol_table; // Tabela de simbolos
 extern char *current_scope;  // Controla o escopo atual
+extern int main_declared;
 
 // Métodos
 HashTable* create_table();
@@ -67,3 +68,9 @@ void add_to_hash_table(Symbol* symbol, HashTable* symbol_table);
 Symbol* create_symbol(char* name, int linha, DeclarationKind id_type, char* type, char* scope);
 char* get_scope(No* root);
 void print_symbol_table(FILE *file, HashTable* symbol_table);
+Symbol* find_symbol(HashTable* symbol_table, char* name, char* scope);
+
+// Análise semântica
+void semantic_analysis(No* root, HashTable* symbol_table);
+void check_main_function();
+int count_symbol(char* name, char* scope, HashTable* symbol_table);

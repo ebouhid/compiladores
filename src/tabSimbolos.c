@@ -88,13 +88,11 @@ char* get_scope(No* node) {
         strncpy(ret, current_scope, MAXLEXEME);
         return ret;
     } else if (first_brother->kind_union.decl != fun_k) {
-        fprintf(stderr, "Scopeeeeeee: %s | node->kind_union.decl = %d\n", node->lexmema, node->kind_union.decl);
         char* parent_scope = get_scope(first_brother->pai);
         strncpy(ret, parent_scope, MAXLEXEME);
         free(parent_scope);
         return ret;
     } else {
-        // fprintf(stderr, "Scopeeeeeee: %s | node->kind_union.decl = %d\n", node->lexmema, node->kind_union.decl);
         strncpy(ret, node->lexmema, MAXLEXEME);
         return ret;
     }
@@ -108,4 +106,35 @@ void print_symbol_table(FILE* file, HashTable* symbol_table) {
             current = current->next;
         }
     }
+}
+
+Symbol* find_symbol(HashTable* symbol_table, char* name, char* scope) {
+    unsigned int hash_key = hash(scope, name);
+    unsigned int index = hash_key % TABLE_SIZE;
+    
+    Symbol* current = symbol_table->table[index];
+    while (current != NULL) {
+        if (current->hash_key == hash_key && strcmp(current->name, name) == 0 && strcmp(current->scope, scope) == 0) {
+            return current;
+        }
+        current = current->next;
+    }
+    
+    return NULL;
+}
+
+int count_symbol(char* name, char* scope, HashTable* symbol_table) {
+    unsigned int hash_key = hash(scope, name);
+    unsigned int index = hash_key % TABLE_SIZE;
+    
+    Symbol* current = symbol_table->table[index];
+    int count = 0;
+    while (current != NULL) {
+        if (current->hash_key == hash_key && strcmp(current->name, name) == 0 && strcmp(current->scope, scope) == 0) {
+            count++;
+        }
+        current = current->next;
+    }
+    
+    return count;
 }

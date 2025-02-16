@@ -112,7 +112,6 @@ fun_declaracao:
         $$->kind_union.decl = (DeclarationKind)fun_k;
         $2->kind_node = declaration_k;
         $2->kind_union.decl = (DeclarationKind)fun_k;
-        fprintf(stderr, "Jarbas: %s | Node kind = %d | Union kind = %d\n", $2->lexmema, $2->kind_node, $2->kind_union.decl);
         add_filho($2, $4);
         add_filho($$, $2);
         add_filho($2, $6);
@@ -123,7 +122,6 @@ fun_declaracao:
         $$->kind_union.decl = (DeclarationKind)fun_k;
         $2->kind_node = declaration_k;
         $2->kind_union.decl = (DeclarationKind)fun_k;
-        fprintf(stderr, "Jarbas: %s | Node kind = %d | Union kind = %d\n", $2->lexmema, $2->kind_node, $2->kind_union.decl);
         add_filho($$, $2);
         add_filho($2, $5);
       }
@@ -350,7 +348,7 @@ args_lista:
 int main() {
     FILE *arvore = fopen("arvore.txt", "w");
     FILE *tabsimb = fopen("tabsimb.txt", "w");
-    yydebug = 1;
+    yydebug = 0;
     int token = 1;
     int sintatica = yyparse();
     if (sintatica == 0) {
@@ -363,6 +361,11 @@ int main() {
     HashTable *hashTable = create_table(HASH_SIZE);
     iterate_tree(raizArvore, hashTable);
     print_symbol_table(tabsimb, hashTable);
+
+    fprintf(stderr, "Semantic analysis\n");
+    semantic_analysis(raizArvore, hashTable);
+    fprintf(stderr, "Checking main function...\n");
+    check_main_function();
 
     return 0;
 }
