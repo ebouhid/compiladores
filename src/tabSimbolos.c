@@ -39,7 +39,14 @@ void iterate_tree(No* root, HashTable* symbol_table) {
         } else {
             new_symbol = create_symbol(root->lexmema, root->linha, root->kind_union.decl, root->lexmema, get_scope(root));
         }
-        add_to_hash_table(new_symbol, symbol_table);
+        if (strcmp(new_symbol->name, "int") != 0 && strcmp(new_symbol->name, "void") != 0)
+        {
+            add_to_hash_table(new_symbol, symbol_table);
+        }
+        else{
+            free(new_symbol);
+        }
+        
     }
 
     for (int i = 0; i < NUMMAXFILHOS; i++) {
