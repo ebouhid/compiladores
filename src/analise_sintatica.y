@@ -128,7 +128,7 @@ fun_declaracao:
 ;
 f_id:
       T_ID {
-        $$ = create_node(yylinenum, id_lexema, expression_k, var_k);
+        $$ = create_node(yylinenum, id_lexema, expression_k, id_k);
       }
 ;
 params:
