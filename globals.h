@@ -74,3 +74,30 @@ Symbol* find_symbol(HashTable* symbol_table, char* name, char* scope);
 void semantic_analysis(No* root, HashTable* symbol_table);
 void check_main_function();
 int count_symbol(char* name, char* scope, HashTable* symbol_table);
+
+//Código intermediário
+enum operacoes {FUN, ARG, LOAD, EQUAL, IFF, RET, GOTO, LAB, PARAM, DIV, MUL, SUB, CALL, END, STORE, HALT, SUM};
+
+typedef struct tacNo{
+    enum operacoes operacao;
+    char op1[20];
+    char op2[20];
+    char resultado[20];
+    struct tacNo *proximo;
+} TacNo;
+
+typedef struct tac{   
+    int qtdNos;
+    TacNo *inicio;
+    TacNo *fim;
+}Tac;
+
+// Funções principais
+Tac *criarTac(Tac *estrutura_tac);
+Tac *criarNoTac(Tac *estrutura_tac, int operacao, const char *op1, const char *op2, const char *resultado);
+Tac *liberarTac(Tac *estrutura_tac);
+void imprimirTac(FILE *arqCodInterm, Tac *tac);
+
+// Função para percorrer a árvore e gerar TAC
+char* percorrer_arvore(No *node_tree, Tac **tac);
+void codigo_intermediario(No *node_tree, Tac *tac);

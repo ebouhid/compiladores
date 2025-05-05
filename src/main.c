@@ -7,11 +7,14 @@
 extern char *yytext;
 extern int yylinenum;
 extern No *raizArvore;
+//extern Tac *tac;
 
 int main(int argc, char **argv) {
     FILE *arvore = fopen("outputs/arvore.txt", "w");
     FILE *tabsimb = fopen("outputs/tabsimb.txt", "w");
+    FILE *codInterm = fopen("outputs/codInterm.txt", "w");
     // yydebug = 0;
+    Tac *tac = NULL;
     int token = 1;
     int sintatica = yyparse();
     if (sintatica == 0) {
@@ -23,6 +26,13 @@ int main(int argc, char **argv) {
     
         semantic_analysis(raizArvore, hashTable);
         check_main_function();
+
+        //código intermediário
+        tac = criarTac(tac);
+        percorrer_arvore(raizArvore, &tac);
+        imprimirTac(codInterm, tac);
+        liberarTac(tac);
+
     } else {
         exit(1);
     }

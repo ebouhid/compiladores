@@ -1,35 +1,15 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-//#include "../globals.h"
+#include "../globals.h"
 #define NUMMAXFILHOS 3
 #define MAXLEXEME 25
 
-typedef enum {statement_k, expression_k, declaration_k} NodeKind;
-typedef enum {if_k, while_k, return_k, break_k, continue_k, expression_statement_k} StatementKind;
-typedef enum {op_k, constant_k, id_k, type_k, arr_k, ativ_k, assign_k} ExpressionKind;
-typedef enum {var_k, fun_k, unknown_k} DeclarationKind;
-
-
-
-
-
-
-enum operacoes {FUN, ARG, LOAD, EQUAL, IFF, RET, GOTO, LAB, PARAM, DIV, MUL, SUB, CALL, END, STORE, HALT};
-
-typedef struct tacNo{
-    enum operacoes operacao;
-    char op1[20];
-    char op2[20];
-    char resultado[20];
-    struct tacNo *proximo;
-}TacNo;
-
-typedef struct tac{   
-    int qtdNos;
-    TacNo *inicio;
-    TacNo *fim;
-}Tac;
+const char *operacoes_nomes[] = {
+    "FUN", "ARG", "LOAD", "EQUAL", "IFF", "RET", "GOTO", "LAB",
+    "PARAM", "DIV", "MUL", "SUB", "CALL", "END", "STORE", "HALT", "SUM"
+};
+const int NUM_OPERACOES = sizeof(operacoes_nomes) / sizeof(operacoes_nomes[0]);
 
 Tac *criarTac(Tac *estrutura_tac){
     estrutura_tac = malloc(sizeof(Tac));
@@ -39,16 +19,37 @@ Tac *criarTac(Tac *estrutura_tac){
     return estrutura_tac;
 }
 
-Tac *criarNoTac(Tac *estrutura_tac, int operacao, char op1[MAXLEXEME], char op2[MAXLEXEME], char resultado[MAXLEXEME]){
+Tac *criarNoTac(Tac *estrutura_tac, int operacao,
+                const char *op1,
+                const char *op2,
+                const char *resultado) {
     TacNo* novoNo = malloc(sizeof(TacNo));
+    if (novoNo == NULL) {
+        perror("Failed to allocate TacNo");
+        return estrutura_tac;
+    }
     //Preencher informações
     novoNo->operacao = operacao;
-    strcpy(novoNo->op1, op1);
-    strcpy(novoNo->op2, op2);
-    strcpy(novoNo->resultado, resultado);
+
+    strncpy(novoNo->op1, op1, sizeof(novoNo->op1) - 1);
+    novoNo->op1[sizeof(novoNo->op1) - 1] = '\0';
+
+    strncpy(novoNo->op2, op2, sizeof(novoNo->op2) - 1);
+    novoNo->op2[sizeof(novoNo->op2) - 1] = '\0';
+
+    strncpy(novoNo->resultado, resultado, sizeof(novoNo->resultado) - 1);
+    novoNo->resultado[sizeof(novoNo->resultado) - 1] = '\0';
+
     novoNo->proximo = NULL;
 
-    //Alocar
+    if (estrutura_tac == NULL) {
+        estrutura_tac = criarTac(NULL);
+        if (estrutura_tac == NULL) {
+             free(novoNo);
+             return NULL;
+        }
+    }
+
     if (estrutura_tac->fim == NULL)
     {
         estrutura_tac->inicio = novoNo;
@@ -59,7 +60,7 @@ Tac *criarNoTac(Tac *estrutura_tac, int operacao, char op1[MAXLEXEME], char op2[
         estrutura_tac->fim = novoNo;
     }
     estrutura_tac->qtdNos++;
-    return estrutura_tac; 
+    return estrutura_tac;
 }
 
 Tac *liberarTac(Tac *estrutura_tac){
@@ -82,189 +83,263 @@ Tac *liberarTac(Tac *estrutura_tac){
     return NULL;    
 }
 
-void imprimirTac(Tac *tac){
+void imprimirTac(FILE *arqCodInterm, Tac *tac){
+    if (arqCodInterm == NULL) {
+        fprintf(stderr, "Error: Invalid file pointer passed to imprimirTac.\n");
+        return;
+    }
+
     if (tac == NULL)
     {
-        printf("Não existe estrutura\n");
+        fprintf(arqCodInterm, "; TAC List: Not generated (NULL structure)\n");
+        printf("imprimirTac: TAC structure is NULL.\n");
         return;
     }
     else if(tac->qtdNos == 0){
-        printf("Estrutura vazia\n");
+        fprintf(arqCodInterm, "; TAC List: Empty\n");
+        printf("imprimirTac: TAC structure is empty (qtdNos = 0).\n");
     }
     else{
-        printf("Qtd de nos: %i\n", tac->qtdNos);
+        fprintf(arqCodInterm, "; TAC List Generated (%d instructions)\n", tac->qtdNos);
+        printf("imprimirTac: Printing %d TAC instructions to file.\n", tac->qtdNos);
+
         TacNo *percorre = tac->inicio;
         int contador = 1;
-        //imprimir todos os nós
-        printf("------------------------\nInstrucao %i:\n\tOperacao: %i\n\tOp1: %s\n\tOp2: %s\n\tResultado: %s\n", contador, percorre->operacao, percorre->op1, percorre->op2, percorre->resultado);
-        while(percorre->proximo != NULL){
-            contador++;
+
+        while(percorre != NULL){
+            const char *op_nome = "UNKNOWN"; 
+
+            if (percorre->operacao >= 0 && percorre->operacao < NUM_OPERACOES) {
+                op_nome = operacoes_nomes[percorre->operacao];
+            } else {
+                fprintf(stderr, "Warning: Unknown TAC operation enum value %d at instruction %d\n", percorre->operacao, contador);
+            }
+
+            fprintf(arqCodInterm, "(%d) (%s, %s, %s, %s)\n",
+                    contador,
+                    op_nome,
+                    percorre->op1,
+                    percorre->op2,
+                    percorre->resultado);
+
             percorre = percorre->proximo;
-            printf("------------------------\nInstrucao %i:\n\tOperacao: %i\n\tOp1: %s\n\tOp2: %s\n\tResultado: %s\n", contador, percorre->operacao, percorre->op1, percorre->op2, percorre->resultado);
-        }        
-    }
-}
-
-
-typedef struct noPilhaTac
-{
-    char lexema[MAXLEXEME];
-    NodeKind kind_node;
-    union {
-        StatementKind stmt;
-        ExpressionKind expr;
-        DeclarationKind decl;
-    } kind_union;
-    struct noPilhaTac *proximo;
-}NoPilhaTac;
-
-
-typedef struct pilhaTac
-{
-    int qtd_elementos;
-    struct noPilhaTac **ponteiros;
-}PilhaTac;
-
-PilhaTac *createpilha(){
-    PilhaTac *pilha = malloc(sizeof(PilhaTac));
-    if (pilha == NULL) {
-        printf("Erro: Falha ao alocar memória para a pilha.\n");
-        return NULL;
-    }
-    pilha->qtd_elementos = 0;
-    pilha->ponteiros = malloc(3 * sizeof(NoPilhaTac*)); // Allocate memory for the array
-    for (int i = 0; i < 3; i++) {
-        pilha->ponteiros[i] = NULL;
-    }
-    return pilha;
-}
-
-PilhaTac *empilhar(PilhaTac *pilha, const char *lexmema, NodeKind kind, int kind_union) {
-    if (pilha == NULL) {
-        printf("Não existe pilha.\n");
-        return NULL;
-    }
-
-    // Verificar se a pilha está cheia (máximo 3 elementos)
-    if (pilha->qtd_elementos >= 3) {
-        printf("Pilha cheia.\n");
-        return pilha;
-    }
-
-    // Criar No
-    NoPilhaTac *novoNo = malloc(sizeof(NoPilhaTac));
-    if (novoNo == NULL) {
-        printf("Erro: Falha ao alocar memória para novo nó.\n");
-        return pilha;
-    }
-
-    // Preencher informações do nó
-    novoNo->kind_node = kind;
-    strcpy(novoNo->lexema, lexmema);
-    switch (kind) {
-        case statement_k:
-            novoNo->kind_union.stmt = (StatementKind)kind_union;
-            break;
-        case expression_k:
-            novoNo->kind_union.expr = (ExpressionKind)kind_union;
-            break;
-        case declaration_k:
-            novoNo->kind_union.decl = (DeclarationKind)kind_union;
-            break;
-    }
-
-    // Deslocar os ponteiros existentes
-    if (pilha->qtd_elementos > 0) {
-        for (int i = pilha->qtd_elementos; i > 0; i--) {
-            pilha->ponteiros[i] = pilha->ponteiros[i-1];
+            contador++;
         }
+        fprintf(arqCodInterm, "; End of TAC List\n");
     }
-
-    // Inserir novo nó no topo
-    pilha->ponteiros[0] = novoNo;
-    pilha->qtd_elementos++;
-
-    return pilha;
+    fflush(arqCodInterm);
 }
 
-void desempilhar(PilhaTac *pilha) {
-    if (pilha == NULL) {
-        printf("Erro: A pilha fornecida é NULL.\n");
-        return;
+char* gerar_temporario() {
+    static int temp_count = 0;
+    char* temp_name = malloc(12);
+    if (temp_name) {
+        sprintf(temp_name, "t%d", temp_count++);
     }
-    
-    if (pilha->qtd_elementos == 0) {
-        printf("Pilha vazia\n");
-        return;
-    }
-
-    // Libera o nó do topo
-    free(pilha->ponteiros[0]);
-
-    // Atualiza os ponteiros
-    for (int i = 0; i < 2; i++) {
-        pilha->ponteiros[i] = pilha->ponteiros[i + 1];
-    }
-    pilha->ponteiros[2] = NULL;
-
-    // Decrementa a quantidade de elementos
-    pilha->qtd_elementos--;
+    return temp_name;
 }
 
-void imprimirPilha(PilhaTac *pilha) {
-    if (pilha == NULL) {
-        printf("Pilha não existe\n");
-        return;
+char* gerar_label() {
+    static int label_count = 0;
+    char* label_name = malloc(12);
+    if (label_name) {
+        sprintf(label_name, "L%d", label_count++);
     }
-    
-    if (pilha->qtd_elementos == 0) {
-        printf("Pilha vazia\n");
-        return;
-    }
+    return label_name;
+}
 
-    printf("Quantidade de elementos: %d\n", pilha->qtd_elementos);
-    printf("------------------------\n");
+char *percorrer_arvore(No *node_tree, Tac **tac_list_ptr) {
+    if (node_tree == NULL) return NULL;
 
-    // Imprime os elementos na ordem do topo para base
-    for (int i = 0; i < pilha->qtd_elementos && i < 3; i++) {
-        if (pilha->ponteiros[i] != NULL) {
-            printf("Elemento %d:\n", i);
-            printf("\tLexema: %s\n", pilha->ponteiros[i]->lexema);
-            printf("\tKind: %d\n", pilha->ponteiros[i]->kind_node);
-            
-            // Imprime o tipo específico da union baseado no kind_node
-            switch (pilha->ponteiros[i]->kind_node) {
-                case statement_k:
-                    printf("\tStatement Kind: %d\n", pilha->ponteiros[i]->kind_union.stmt);
+    char *result_str = NULL;
+
+    switch (node_tree->kind_node) {
+        case statement_k: {
+            char *res_child = NULL;
+            switch (node_tree->kind_union.stmt) {
+                case if_k: {
+                    char *label_else = gerar_label();
+                    char *label_end = gerar_label();
+                    if (!label_else || !label_end) { return NULL; }
+
+                    char *cond_res = percorrer_arvore(node_tree->filho[0], tac_list_ptr);
+                    if (cond_res) {
+                        *tac_list_ptr = criarNoTac(*tac_list_ptr, IFF, cond_res, "", label_else);
+                        free(cond_res);
+                    } else {
+                        fprintf(stderr, "Error: If condition did not produce a result.\n");
+                    }
+
+                    res_child = percorrer_arvore(node_tree->filho[1], tac_list_ptr);
+                    free(res_child);
+                    *tac_list_ptr = criarNoTac(*tac_list_ptr, GOTO, "", "", label_end);
+
+                    *tac_list_ptr = criarNoTac(*tac_list_ptr, LAB, label_else, "", "");
+                    if (node_tree->filho[2]) {
+                        res_child = percorrer_arvore(node_tree->filho[2], tac_list_ptr);
+                        free(res_child);
+                    }
+
+                    *tac_list_ptr = criarNoTac(*tac_list_ptr, LAB, label_end, "", "");
+                    free(label_else);
+                    free(label_end);
+                    result_str = NULL;
                     break;
-                case expression_k:
-                    printf("\tExpression Kind: %d\n", pilha->ponteiros[i]->kind_union.expr);
+                }
+                case while_k: {
+                    char *label_start = gerar_label();
+                    char *label_end = gerar_label();
+                    if (!label_start || !label_end) { return NULL; }
+
+                    *tac_list_ptr = criarNoTac(*tac_list_ptr, LAB, label_start, "", "");
+
+                    char *cond_res = percorrer_arvore(node_tree->filho[0], tac_list_ptr);
+                    if (cond_res) {
+                        *tac_list_ptr = criarNoTac(*tac_list_ptr, IFF, cond_res, "", label_end);
+                        free(cond_res);
+                    } else {
+                        fprintf(stderr, "Error: While condition did not produce a result.\n");
+                    }
+
+                    res_child = percorrer_arvore(node_tree->filho[1], tac_list_ptr);
+                    free(res_child);
+                    *tac_list_ptr = criarNoTac(*tac_list_ptr, GOTO, "", "", label_start);
+
+                    *tac_list_ptr = criarNoTac(*tac_list_ptr, LAB, label_end, "", "");
+                    free(label_start);
+                    free(label_end);
+                    result_str = NULL;
                     break;
-                case declaration_k:
-                    printf("\tDeclaration Kind: %d\n", pilha->ponteiros[i]->kind_union.decl);
+                }
+                case return_k:
+                    if (node_tree->filho[0]) {
+                        char *ret_val = percorrer_arvore(node_tree->filho[0], tac_list_ptr);
+                        if (ret_val) {
+                            *tac_list_ptr = criarNoTac(*tac_list_ptr, RET, ret_val, "", "");
+                            free(ret_val);
+                        } else {
+                            fprintf(stderr, "Error: Return expression did not produce a result.\n");
+                        }
+                    } else {
+                        *tac_list_ptr = criarNoTac(*tac_list_ptr, RET, "", "", "");
+                    }
+                    result_str = NULL;
+                    break;
+                default:
+                    res_child = percorrer_arvore(node_tree->filho[0], tac_list_ptr);
+                    free(res_child);
+                    result_str = NULL;
                     break;
             }
-            printf("------------------------\n");
+            break;
         }
+
+        case expression_k: {
+            switch (node_tree->kind_union.expr) {
+                case op_k: {
+                    char *res1 = percorrer_arvore(node_tree->filho[0], tac_list_ptr);
+                    char *res2 = percorrer_arvore(node_tree->filho[1], tac_list_ptr);
+
+                    if (res1 && res2) {
+                        result_str = gerar_temporario();
+                        if (!result_str) { free(res1); free(res2); return NULL; }
+
+                        enum operacoes op;
+                        if (strcmp(node_tree->lexmema, "+") == 0) op = SUM;
+                        else if (strcmp(node_tree->lexmema, "-") == 0) op = SUB;
+                        else if (strcmp(node_tree->lexmema, "*") == 0) op = MUL;
+                        else if (strcmp(node_tree->lexmema, "/") == 0) op = DIV;
+                        else {
+                            fprintf(stderr, "Error: Unrecognized operator '%s'\n", node_tree->lexmema);
+                            op = -1;
+                        }
+
+                        if (op != -1) {
+                            *tac_list_ptr = criarNoTac(*tac_list_ptr, op, res1, res2, result_str);
+                        }
+                    } else {
+                        fprintf(stderr, "Error: Operands for '%s' did not produce results.\n", node_tree->lexmema);
+                        result_str = NULL;
+                    }
+                    free(res1);
+                    free(res2);
+                    break;
+                }
+                case constant_k:
+                case id_k:
+                    result_str = strdup(node_tree->lexmema);
+                    break;
+
+                case assign_k: {
+                    char *rhs_res = percorrer_arvore(node_tree->filho[1], tac_list_ptr);
+                    char *lhs_name = NULL;
+
+                    if (node_tree->filho[0]->kind_node == expression_k && node_tree->filho[0]->kind_union.expr == id_k) {
+                        lhs_name = node_tree->filho[0]->lexmema;
+                    }
+
+                    if (rhs_res && lhs_name) {
+                        *tac_list_ptr = criarNoTac(*tac_list_ptr, EQUAL, rhs_res, "", lhs_name);
+                        result_str = strdup(lhs_name);
+                    } else {
+                        fprintf(stderr, "Error: Invalid assignment structure or RHS failed.\n");
+                        result_str = NULL;
+                    }
+                    free(rhs_res);
+                    break;
+                }
+                default:
+                    result_str = NULL;
+                    break;
+            }
+            break;
+        }
+
+        case declaration_k: {
+            char *res_child = NULL;
+            switch (node_tree->kind_union.decl) {
+                case fun_k:
+                    if(strcmp(node_tree->lexmema, "int") !=0 && strcmp(node_tree->lexmema, "void") != 0){
+                        *tac_list_ptr = criarNoTac(*tac_list_ptr, FUN, node_tree->pai->lexmema, node_tree->lexmema, "");
+                    }
+                    for (int i = 0; i < NUMMAXFILHOS; i++) {
+                        if (node_tree->filho[i]) {
+                            res_child = percorrer_arvore(node_tree->filho[i], tac_list_ptr);
+                            free(res_child);
+                        }
+                    }
+                    if(strcmp(node_tree->lexmema, "int") !=0 && strcmp(node_tree->lexmema, "void") != 0){
+                        *tac_list_ptr = criarNoTac(*tac_list_ptr, END, node_tree->lexmema, "", "");
+                    }
+                    result_str = NULL;
+
+                    break;
+                case param_k:
+                    *tac_list_ptr = criarNoTac(*tac_list_ptr, PARAM, node_tree->lexmema, "", "");
+                    
+                    result_str = NULL;
+                    break;
+
+                case var_k:
+                    result_str = NULL;
+                    break;
+
+                default:
+                    result_str = NULL;
+                    break;
+            }
+            break;
+        }
+
+        default:
+            result_str = NULL;
+            break;
     }
-}
 
+    if (node_tree->irmao) {
+        char *sibling_res = percorrer_arvore(node_tree->irmao, tac_list_ptr);
+        free(sibling_res);
+    }
 
-int main(){
-    Tac *estrutura_principal = NULL;
-    char op1[MAXLEXEME] = "op1";
-    char op2[MAXLEXEME] = "op2";
-    char resultado[MAXLEXEME] = "resultado";
-
-    PilhaTac *pilha = createpilha();
-    
-    // Test with some elements
-    pilha = empilhar(pilha, "test1", expression_k, op_k);
-    pilha = empilhar(pilha, "test2", statement_k, if_k);
-    pilha = empilhar(pilha, "test3", statement_k, if_k);
-
-    
-    printf("%s", pilha->ponteiros[1]->lexema);
-    
-    return 0;
+    return result_str;
 }
