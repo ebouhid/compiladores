@@ -1,30 +1,31 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../globals.h"
 #define NUMMAXFILHOS 3
 #define MAXLEXEME 25
 
-typedef enum {statement_k, expression_k, declaration_k} NodeKind;
-typedef enum {if_k, while_k, return_k, break_k, continue_k, expression_statement_k} StatementKind;
-typedef enum {op_k, constant_k, id_k, type_k} ExpressionKind;
-typedef enum {var_k, fun_k} DeclarationKind;
+// typedef enum {statement_k, expression_k, declaration_k} NodeKind;
+// typedef enum {if_k, while_k, return_k, break_k, continue_k, expression_statement_k} StatementKind;
+// typedef enum {op_k, constant_k, id_k, type_k} ExpressionKind;
+// typedef enum {var_k, fun_k} DeclarationKind;
 
-typedef struct no
-{
-    int linha;
-    char lexmema[MAXLEXEME];
-    int max_index;
-    NodeKind kind_node;
-    union {
-        StatementKind stmt;
-        ExpressionKind expr;
-        DeclarationKind decl;
-    } kind_union;
-    struct no *pai;
-    struct no *filho[NUMMAXFILHOS];
-    struct no *irmao;
-    struct no *prev_irmao;
-} No;
+// typedef struct no
+// {
+//     int linha;
+//     char lexmema[MAXLEXEME];
+//     int max_index;
+//     NodeKind kind_node;
+//     union {
+//         StatementKind stmt;
+//         ExpressionKind expr;
+//         DeclarationKind decl;
+//     } kind_union;
+//     struct no *pai;
+//     struct no *filho[NUMMAXFILHOS];
+//     struct no *irmao;
+//     struct no *prev_irmao;
+// } No;
 
 No * create_node(int linha, const char *lexmema, NodeKind kind, int kind_union){
     No *node = malloc(sizeof(No));
