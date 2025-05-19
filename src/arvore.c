@@ -90,26 +90,96 @@ void print_node(FILE *file, No *node){
     if (node == NULL){return;}
     char *kind_node;
     int kind_union;
+    char kind_union_name[64];
 
     switch (node->kind_node){
         case statement_k:
             kind_node = "statement";
             kind_union = node->kind_union.stmt;
+            switch (kind_union) {
+                case if_k:
+                    strncpy(kind_union_name, "if", sizeof(kind_union_name));
+                    break;
+                case while_k:
+                    strncpy(kind_union_name, "while", sizeof(kind_union_name));
+                    break;
+                case return_k:
+                    strncpy(kind_union_name, "return", sizeof(kind_union_name));
+                    break;
+                case break_k:
+                    strncpy(kind_union_name, "break", sizeof(kind_union_name));
+                    break;
+                case continue_k:
+                    strncpy(kind_union_name, "continue", sizeof(kind_union_name));
+                    break;
+                case expression_statement_k:
+                    strncpy(kind_union_name, "expression_statement", sizeof(kind_union_name));
+                    break;
+                default:
+                    strncpy(kind_union_name, "unknown", sizeof(kind_union_name));
+                    break;
+            }
             break;
         case expression_k:
             kind_node = "expression";
             kind_union = node->kind_union.expr;
+            switch (kind_union) {
+                case op_k:
+                    strncpy(kind_union_name, node->lexmema, sizeof(kind_union_name));
+                    break;
+                case constant_k:
+                    strncpy(kind_union_name, "constant", sizeof(kind_union_name));
+                    break;
+                case id_k:
+                    strncpy(kind_union_name, "id", sizeof(kind_union_name));
+                    break;
+                case type_k:
+                    strncpy(kind_union_name, "type", sizeof(kind_union_name));
+                    break;
+                case arr_k:
+                    strncpy(kind_union_name, "array", sizeof(kind_union_name));
+                    break;
+                case ativ_k:
+                    strncpy(kind_union_name, "activation", sizeof(kind_union_name));
+                    break;
+                case assign_k:
+                    strncpy(kind_union_name, "assignment", sizeof(kind_union_name));
+                    break;
+                default:
+                    strncpy(kind_union_name, "unknown", sizeof(kind_union_name));
+                    break;
+            }
             break;
         case declaration_k:
             kind_node = "declaration";
             kind_union = node->kind_union.decl;
+            switch (kind_union) {
+                case var_k:
+                    strcpy(kind_union_name, "variable");
+                    break;
+                case fun_k:
+                    strcpy(kind_union_name, "function");
+                    break;
+                case param_k:
+                    strcpy(kind_union_name, "parameter");
+                    break;
+                case arrdecl_k:
+                    strcpy(kind_union_name, "array");
+                    break;
+                case unknown_k:
+                    strcpy(kind_union_name, "unknown");
+                    break;
+                default:
+                    strcpy(kind_union_name, "deu_default");
+                    break;
+            }
             break;
         default:
             kind_node = "unknown";
             kind_union = -1;
             break;
     }
-    fprintf(file, "Linha: %d, Lexema: %s, Tipo: %s, Tipo_Union: %d", node->linha, node->lexmema, kind_node, kind_union);
+    fprintf(file, "Linha: %d, Lexema: %s, Tipo: %s, Tipo_Union: %s", node->linha, node->lexmema, kind_node, kind_union_name);
     if (node->pai != NULL){
         fprintf(file, ", Pai: %s", node->pai->lexmema);
     }
