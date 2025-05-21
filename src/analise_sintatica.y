@@ -86,13 +86,13 @@ var_declaracao:
         $$->kind_node = declaration_k;
         $$->kind_union.decl = (DeclarationKind)arr_k;
         $$->linha = yylinenum;
-        YYSTYPE aux1 = create_node(yylinenum, heapNameLexeme, declaration_k, arr_k);
+        YYSTYPE aux1 = create_node(yylinenum, heapNameLexeme, declaration_k, arrdecl_k);
         add_filho($$, aux1);
         char heapNumberLexemeStr[10];
         sprintf(heapNumberLexemeStr, "%d", heapNumberLexeme);
         YYSTYPE aux2 = create_node(yylinenum, heapNumberLexemeStr, declaration_k, constant_k);
         aux2->max_index = heapNumberLexeme;
-        add_filho($$, aux2);
+        add_filho(aux1, aux2);
     }
 ;
 

@@ -5,6 +5,7 @@
 // Árvore de sintaxe abstrata
 #define NUMMAXFILHOS 3
 #define MAXLEXEME 25
+#define MAX_ARGS_TEMP 255
 
 #ifndef GLOBALS_H
 #define GLOBALS_H
@@ -12,7 +13,7 @@
 typedef enum {statement_k, expression_k, declaration_k} NodeKind;
 typedef enum {if_k, while_k, return_k, break_k, continue_k, expression_statement_k} StatementKind;
 typedef enum {op_k, constant_k, id_k, type_k, arr_k, ativ_k, assign_k} ExpressionKind;
-typedef enum {var_k, fun_k, param_k, unknown_k} DeclarationKind;
+typedef enum {var_k, fun_k, param_k, arrdecl_k, unknown_k} DeclarationKind;
 
 typedef struct no
 {
