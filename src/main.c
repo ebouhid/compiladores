@@ -9,13 +9,16 @@ extern char *yytext;
 extern int yylinenum;
 extern No *raizArvore;
 
-int main(int argc, char **argv) {
-    system("mkdir -p outputs");
+int main(int argc, char **argv)
+{
+    fprintf(stderr, "Compilador - Análise Sintática e Semântica\n");
+    // system("mkdir -p outputs");
     FILE *arvore = fopen("outputs/arvore.txt", "w");
     FILE *tabsimb = fopen("outputs/tabsimb.txt", "w");
     FILE *codinter = fopen("outputs/codint.txt", "w");
-    
-    if (!arvore || !tabsimb || !codinter) {
+
+    if (!arvore || !tabsimb || !codinter)
+    {
         fprintf(stderr, "Erro: Falha ao abrir arquivos de saída.\n");
         // if (yyin) fclose(yyin);
         exit(1);
@@ -25,7 +28,8 @@ int main(int argc, char **argv) {
     printf("Iniciando análise...\n");
     int sintatica = yyparse();
 
-    if (sintatica == 0 && raizArvore != NULL) {
+    if (sintatica == 0 && raizArvore != NULL)
+    {
         printf("Análise sintática concluída com sucesso.\n");
         print_tree(arvore, raizArvore, 0, 0);
         printf("Árvore sintática impressa em outputs/arvore.txt\n");
@@ -36,26 +40,31 @@ int main(int argc, char **argv) {
         printf("Tabela de símbolos impressa em outputs/tabsimb.txt\n");
 
         printf("Iniciando análise semântica...\n");
+        // Replace the two separate function calls with the new combined functionw
         semantic_analysis(raizArvore, hashTable);
-        check_main_function();
-        // Assumindo que semantic_analysis não retorna erro fatal ou usa exit()
+        // check_main_function(); - This is now called inside perform_semantic_analysis
         printf("Análise semântica concluída.\n");
 
         // --- Geração de Código Intermediário --- // *** ADICIONADO ***
         printf("Iniciando geração de código intermediário...\n");
         Tac *codigo_gerado = gerar_codigo_intermediario(raizArvore, hashTable);
-        if (codigo_gerado) {
+        if (codigo_gerado)
+        {
             imprimirTac(codinter, codigo_gerado);
             printf("Código intermediário impresso em outputs/codigo_intermediario.txt\n");
             // liberarTac(codigo_gerado); // Liberar memória se não for mais usar
-        } else {
+        }
+        else
+        {
             fprintf(stderr, "Erro durante a geração de código intermediário.\n");
         }
         // --- Fim Geração --- //
 
         // free_tree(raizArvore); // Liberar memória da árvore
         // Liberar tabela de símbolos também seria bom
-    } else {
+    }
+    else
+    {
         fprintf(stderr, "Erro durante a análise sintática ou árvore vazia.\n");
         fclose(arvore);
         fclose(tabsimb);

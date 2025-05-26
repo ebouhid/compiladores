@@ -14,6 +14,9 @@ typedef enum {
     OP_ASSIGN, // Atribuição simples (ex: t1 = t2)
     OP_LOAD,   // Carrega de array/ponteiro (ex: t1 = V[t0])
     OP_STORE,  // Armazena em array/ponteiro (ex: V[t0] = t1)
+    OP_DECL_VAR, // Declaração de variável local
+    OP_DECL_ARR, // Declaração de array local
+    OP_FORMAL_PARAM, // Declaração de parâmetro formal (ex: int x)
     // Saltos
     OP_GOTO,   // Salto incondicional
     OP_IFF,    // Salto se falso (ifFalse)
