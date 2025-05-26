@@ -144,8 +144,16 @@ void imprimirTac(FILE *outfile, Tac *tac) {
     TacNo *percorre = tac->inicio;
     int contador = 0;
     while (percorre != NULL) {
-        fprintf(outfile, "(%d)\t(%s, %s, %s, %s)\n",
+        char tabulation[5];
+        if (contador < 10) {
+            snprintf(tabulation, sizeof(tabulation), "\t\t");
+        }
+        else {
+            snprintf(tabulation, sizeof(tabulation), "\t");
+        }
+        fprintf(outfile, "(%d)%s(%s, %s, %s, %s)\n",
                 contador++,
+                tabulation,
                 operacao_para_string(percorre->operacao),
                 percorre->op1,
                 percorre->op2,
