@@ -1,19 +1,15 @@
 /* programa para ordena��o por sele��o de 
    uma matriz com dez elementos. */
-/**/
-/**/
+
 int vet[ 10 ];
 
 int minloc ( int a[], int low, int high )
-{	
-	int i;
-	int x;
-	int k;
+{	int i; int x; int k;
 	k = low;
-	x = a[0];
+	x = a[low];
 	i = low + 1;
 	while (i < high){
-		if (a[low] < x){
+		if (a[i] < x){
 			x = a[i];
 			k = i;
 		}
