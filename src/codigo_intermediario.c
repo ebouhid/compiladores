@@ -1,7 +1,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "codigo_intermediario.h" // Assume que este .h será atualizado
+#include "codigo_intermediario.h"
 
 // --- Variáveis Globais Estáticas (para temporários e rótulos) ---
 static int temp_count = 0;
@@ -17,21 +17,16 @@ char *novo_temp() {
     char *nome_alocado = strdup(buffer_temp);
     if (nome_alocado == NULL) {
         fprintf(stderr, "Erro GCI: Falha ao alocar memória para novo_temp.\n");
-        // Em um compilador real, pode ser necessário um tratamento de erro mais drástico.
-        // exit(EXIT_FAILURE); // Consider exiting on critical allocation failure
     }
     return nome_alocado;
 }
 
-// Gera um novo nome de rótulo (_L0, _L1, ...)
-// Retorna uma NOVA string alocada dinamicamente. O chamador DEVE liberar com free().
 char *novo_label() {
     char buffer_temp[MAXLEXEME]; // Buffer local para snprintf
     snprintf(buffer_temp, MAXLEXEME, "_L%d", label_count++);
     char *nome_alocado = strdup(buffer_temp);
     if (nome_alocado == NULL) {
         fprintf(stderr, "Erro GCI: Falha ao alocar memória para novo_label.\n");
-        // exit(EXIT_FAILURE); // Consider exiting
     }
     return nome_alocado;
 }
@@ -44,18 +39,17 @@ const char *operacao_para_string(OperacaoTac op) {
         case OP_MUL: return "MUL";
         case OP_DIV: return "DIV";
         case OP_MOD: return "MOD";
-        // case OP_UMINUS: return "UMINUS"; // Se você adicionar unário menos
         case OP_LT: return "LT";
         case OP_LE: return "LE";
         case OP_GT: return "GT";
         case OP_GE: return "GE";
         case OP_EQ: return "EQ";
         case OP_NE: return "NE";
-        case OP_ASSIGN: return "ASSIGN"; // Note: This might become less used if all assignments use STORE
-        case OP_LOAD: return "LOAD";   // Para array_access ou var_access: dest = base[index] ou dest = var
-        case OP_STORE: return "STORE";  // Para array_assign ou var_assign: base[index] = val ou var = val
+        case OP_ASSIGN: return "ASSIGN";
+        case OP_LOAD: return "LOAD";
+        case OP_STORE: return "STORE";
         case OP_GOTO: return "GOTO";
-        case OP_IFF: return "IFF";     // If False Jump
+        case OP_IFF: return "IFF";
         case OP_FUN: return "FUN";
         case OP_END: return "END";
         case OP_FORMAL_PARAM: return "FORMAL_PARAM";
@@ -106,9 +100,7 @@ Tac *criarNoTac(Tac *estrutura_tac, OperacaoTac operacao, const char *op1, const
         estrutura_tac->fim = novoNo;
     }
     estrutura_tac->qtdNos++;
-    return estrutura_tac; // Should return the modified tac_list, but it's passed by pointer value
-                          // This return is not strictly necessary if the caller doesn't reassign.
-                          // However, it's harmless.
+    return estrutura_tac;
 }
 
 Tac *liberarTac(Tac *estrutura_tac) {
@@ -182,9 +174,7 @@ char *gerar_codigo_no(No *no, Tac *tac_list, HashTable *symbol_table) {
                         fprintf(stderr, "Erro GCI: Declaração de função sem nome ou ID.\n");
                         return NULL;
                     }
-                    temp_count = 0; // Reinicia temporários para nova função
-                    // Assuming no->lexmema is the return type of the function (e.g., "int", "void")
-                    // And no->filho[0]->lexmema is the function name.
+                    temp_count = 0;
                     criarNoTac(tac_list, OP_FUN, no->filho[0]->lexmema, no->lexmema, NULL);
 
 
@@ -274,12 +264,12 @@ char *gerar_codigo_no(No *no, Tac *tac_list, HashTable *symbol_table) {
                     if (no->filho[0] == NULL || no->filho[1] == NULL) {
                          fprintf(stderr, "Erro GCI: Nó WHILE incompleto.\n"); return NULL;
                     }
-                    label1 = novo_label(); // Loop condition test start
-                    label2 = novo_label(); // Loop exit
+                    label1 = novo_label();
+                    label2 = novo_label();
                     if (!label1 || !label2) { free(label1); free(label2); return NULL; }
 
                     criarNoTac(tac_list, OP_LAB, NULL, NULL, label1);
-                    op1_loc = gerar_codigo_no(no->filho[0], tac_list, symbol_table); // Condition
+                    op1_loc = gerar_codigo_no(no->filho[0], tac_list, symbol_table);
                     if (op1_loc == NULL) { free(label1); free(label2); return NULL; }
 
                     criarNoTac(tac_list, OP_IFF, op1_loc, NULL, label2);
@@ -389,58 +379,86 @@ char *gerar_codigo_no(No *no, Tac *tac_list, HashTable *symbol_table) {
 
                 case assign_k:
                     if (!no->filho[0] || !no->filho[1]) {
-                        fprintf(stderr, "Erro GCI: Atribuição incompleta.\n"); return NULL;
+                        fprintf(stderr, "Erro GCI: Atribuição incompleta.\n");
+                        return NULL;
                     }
 
                     op2_loc = gerar_codigo_no(no->filho[1], tac_list, symbol_table); // RHS
                     if (!op2_loc) return NULL;
-                    if (no->filho[1]->kind_node == expression_k && no->filho[1]->kind_union.expr == id_k) {
-                        char *temp = novo_temp();
-                        if (!temp) { free(op2_loc); return NULL; }
-                        criarNoTac(tac_list, OP_LOAD, op2_loc, NULL, temp);
-                        free(op2_loc);
-                        op2_loc = temp; // op2_loc now holds value or temp name with value
-                    }
 
+                    if (no->filho[1]->kind_node == expression_k && no->filho[1]->kind_union.expr == id_k) {
+                        char *temp_rhs_val = novo_temp();
+                        if (!temp_rhs_val) { free(op2_loc); return NULL; }
+                        criarNoTac(tac_list, OP_LOAD, op2_loc, NULL, temp_rhs_val);
+                        free(op2_loc);
+                        op2_loc = temp_rhs_val;
+                    }
+                    
+                    // 2. Create a new temporary to be the target of OP_ASSIGN.
+                    char *assigned_val_temp = novo_temp();
+                    if (!assigned_val_temp) {
+                        free(op2_loc);
+                        return NULL;
+                    }
+                    criarNoTac(tac_list, OP_ASSIGN, op2_loc, NULL, assigned_val_temp);
+                    if (no->filho[1]->kind_node == expression_k &&
+                        (no->filho[1]->kind_union.expr == id_k || no->filho[1]->kind_union.expr == op_k ||
+                         no->filho[1]->kind_union.expr == arr_k || no->filho[1]->kind_union.expr == ativ_k)) {
+                        free(op2_loc);
+                    } else {
+                        free(op2_loc);
+                    }
+                    op2_loc = NULL;
+
+
+                    // 3. Process LValue and STORE the value from assigned_val_temp
                     No *lvalue = no->filho[0];
-                    if (lvalue->kind_node == expression_k && lvalue->kind_union.expr == id_k) { // Simple var assign: id = val
+                    if (lvalue->kind_node == expression_k && lvalue->kind_union.expr == id_k) {
+                        // Simple variable assignment: id = assigned_val_temp
                         if (lvalue->lexmema == NULL) {
-                            fprintf(stderr, "Erro GCI: ID de destino nulo na atribuição.\n"); free(op2_loc); return NULL;
+                            fprintf(stderr, "Erro GCI: ID de destino nulo na atribuição.\n");
+                            free(assigned_val_temp);
+                            return NULL;
                         }
-                        criarNoTac(tac_list, OP_STORE, op2_loc, NULL, lvalue->lexmema); // STORE val, null, id_name
-                        res = op2_loc; // Assignment result is the stored value
-                    } else if (lvalue->kind_node == expression_k && lvalue->kind_union.expr == arr_k) { // Array assign: id[idx] = val
+                        criarNoTac(tac_list, OP_STORE, assigned_val_temp, NULL, lvalue->lexmema);
+                        res = assigned_val_temp; // The result of the assignment expression is the value, now in assigned_val_temp
+                    } else if (lvalue->kind_node == expression_k && lvalue->kind_union.expr == arr_k) {
+                        // Array assignment: id[idx] = assigned_val_temp
                         if (lvalue->lexmema == NULL || lvalue->filho[0] == NULL) {
-                            fprintf(stderr, "Erro GCI: Atribuição a array com ID ou índice ausente.\n"); free(op2_loc); return NULL;
+                            fprintf(stderr, "Erro GCI: Atribuição a array com ID ou índice ausente.\n");
+                            free(assigned_val_temp);
+                            return NULL;
                         }
                         char *array_base_name = lvalue->lexmema;
                         op3_loc = gerar_codigo_no(lvalue->filho[0], tac_list, symbol_table); // Process index
-                        if (!op3_loc) { free(op2_loc); return NULL; }
+                        if (!op3_loc) {
+                            free(assigned_val_temp);
+                            return NULL;
+                        }
 
                         // If index itself is a variable (id_k), its value needs to be loaded
                         if (lvalue->filho[0]->kind_node == expression_k && lvalue->filho[0]->kind_union.expr == id_k) {
                             char *temp_idx_val = novo_temp();
-                            if (!temp_idx_val) { free(op2_loc); free(op3_loc); return NULL; }
+                            if (!temp_idx_val) {
+                                free(assigned_val_temp);
+                                free(op3_loc);
+                                return NULL;
+                            }
                             criarNoTac(tac_list, OP_LOAD, op3_loc, NULL, temp_idx_val);
                             free(op3_loc); // op3_loc was name
-                            op3_loc = temp_idx_val; // op3_loc is now temp with value
+                            op3_loc = temp_idx_val; // op3_loc is now temp with index value
                         }
-                        // op2_loc has value from RHS, op3_loc has index value (or temp with value)
-                        criarNoTac(tac_list, OP_STORE, op2_loc, op3_loc, array_base_name);
+                        // op3_loc now holds the index value (or temp name with value)
+                        criarNoTac(tac_list, OP_STORE, assigned_val_temp, op3_loc, array_base_name);
                         free(op3_loc); op3_loc = NULL;
-                        res = op2_loc; // Assignment result is the stored value
+                        res = assigned_val_temp; // The result of the assignment expression is the value, now in assigned_val_temp
                     } else {
                         fprintf(stderr, "Erro GCI: LValue inválido para atribuição.\n");
-                        free(op2_loc);
+                        free(assigned_val_temp);
                         return NULL;
                     }
-                    // Note: op2_loc is not freed here if it's strdup'd from a constant,
-                    // but `res` takes ownership. If res is used, it will be freed by its caller.
-                    // If res is not used (assign as statement), it should be freed.
-                    // The current structure returns res, caller should free.
-                    // If op2_loc was a temporary, it's fine as res.
+                    // `res` (which is assigned_val_temp) is returned. The caller is responsible for freeing it.
                     break;
-
                 case arr_k: // Array access for read: x = id[expr]
                     if (no->lexmema == NULL || no->filho[0] == NULL) {
                         fprintf(stderr, "Erro GCI: Acesso a array com ID ou índice ausente.\n"); return NULL;
@@ -529,7 +547,7 @@ char *gerar_codigo_no(No *no, Tac *tac_list, HashTable *symbol_table) {
 
     if (no && no->irmao) {
         char *irmao_res = gerar_codigo_no(no->irmao, tac_list, symbol_table);
-        free(irmao_res); // Result of sibling statements/declarations typically not used by prior.
+        free(irmao_res);
     }
     return res; // `res` holds the name of a temporary or constant (must be freed by caller if not NULL)
 }
@@ -550,8 +568,6 @@ Tac *gerar_codigo_intermediario(No *raizArvore, HashTable *symbol_table) {
     free(res_geral); // Result from the top-level list of declarations is not used.
 
     if (codigo_final->qtdNos > 0) {
-        // Add HALT only if the last instruction isn't already a flow control altering one for main
-        // This is a simplification; proper end-of-main handling might need more context.
         if (codigo_final->fim &&
             codigo_final->fim->operacao != OP_HALT &&
             codigo_final->fim->operacao != OP_RET &&  // If last func explicitly returns
