@@ -9,3 +9,4 @@ testes
 outputs/
 SysML/
 *.dSYM/
+.DS_Store
